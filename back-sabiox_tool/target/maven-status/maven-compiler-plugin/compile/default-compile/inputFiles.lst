@@ -1,0 +1,6 @@
+/home/fabio/Java/SABiOx/sabiox_tool/back-sabiox_tool/src/main/java/br/com/sabiox/sabiox_tool/SabioxToolApplication.java
+/home/fabio/Java/SABiOx/sabiox_tool/back-sabiox_tool/src/main/java/br/com/sabiox/sabiox_tool/controller/ProjectController.java
+/home/fabio/Java/SABiOx/sabiox_tool/back-sabiox_tool/src/main/java/br/com/sabiox/sabiox_tool/model/Project.java
+/home/fabio/Java/SABiOx/sabiox_tool/back-sabiox_tool/src/main/java/br/com/sabiox/sabiox_tool/repository/ProjectRepository.java
+/home/fabio/Java/SABiOx/sabiox_tool/back-sabiox_tool/src/main/java/br/com/sabiox/sabiox_tool/util/dtos/request/ProjectRequestDTO.java
+/home/fabio/Java/SABiOx/sabiox_tool/back-sabiox_tool/src/main/java/br/com/sabiox/sabiox_tool/util/dtos/response/ClientResponseDTO.java

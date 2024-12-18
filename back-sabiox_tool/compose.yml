@@ -1,0 +1,9 @@
+services:
+  mysql:
+    image: 'mysql'
+    container_name: SABiOxDB
+    environment:
+      - 'MYSQL_DATABASE=SABiOxDB'
+      - 'MYSQL_ROOT_PASSWORD=3LlxEf3!8#bA*%5j&58$'
+    ports:
+      - '3307:3306'
