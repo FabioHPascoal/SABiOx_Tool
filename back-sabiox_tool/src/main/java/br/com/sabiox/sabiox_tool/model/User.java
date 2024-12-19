@@ -5,11 +5,23 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
+@Entity
+@Table(name = "Users")
 public class User {
+
+    // public User(String name, String userName, String email, String password) {
+    //     this.name = name;
+    //     this.username = userName;
+    //     this.email = email;
+    //     this.password = password;
+    // }
+    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -18,9 +30,9 @@ public class User {
     private String name;
 
     @Column(unique = true, nullable = false, name = "user_name")
-    private String userName;
+    private String username;
 
-    @Column(unique = true, nullable = false, name = "email")
+    @Column(unique = true, nullable = false)
     private String email;
 
     @Column(nullable = false)
@@ -35,8 +47,8 @@ public class User {
     public String getName() {return name;}
     public void setName(String name) {this.name = name;}
 
-    public String getUserName() {return userName;}
-    public void setUserName(String userName) {this.userName = userName;}
+    public String getUsername() {return username;}
+    public void setUsername(String username) {this.username = username;}
 
     public String getEmail() {return email;}
     public void setEmail(String email) {this.email = email;}
