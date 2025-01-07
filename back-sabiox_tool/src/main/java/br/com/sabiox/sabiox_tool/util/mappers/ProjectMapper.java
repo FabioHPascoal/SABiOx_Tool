@@ -13,7 +13,8 @@ public class ProjectMapper {
                 project.getId(),
                 project.getUser().getId(),
                 project.getTitle(),
-                project.getDescription()
+                project.getDescription(),
+                project.getCreationDate()
         );
     }
 

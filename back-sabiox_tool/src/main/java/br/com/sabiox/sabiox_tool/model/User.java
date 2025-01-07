@@ -1,6 +1,6 @@
 package br.com.sabiox.sabiox_tool.model;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -14,13 +14,6 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "Users")
 public class User {
-
-    // public User(String name, String userName, String email, String password) {
-    //     this.name = name;
-    //     this.username = userName;
-    //     this.email = email;
-    //     this.password = password;
-    // }
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -40,7 +33,7 @@ public class User {
 
     @CreationTimestamp
     @Column(name = "creation_date", nullable = false, updatable = false)
-    private LocalDateTime creationDate;
+    private LocalDate creationDate;
 
     public Long getId() {return id;}
 
@@ -56,5 +49,5 @@ public class User {
     public String getPassword() {return password;}
     public void setPassword(String password) {this.password = password;}
 
-    public LocalDateTime getCreationDate() {return creationDate;}
+    public LocalDate getCreationDate() {return creationDate;}
 }

@@ -1,5 +1,10 @@
 package br.com.sabiox.sabiox_tool.model;
 
+import java.time.LocalDate;
+
+import org.hibernate.annotations.CreationTimestamp;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
@@ -12,12 +17,6 @@ import jakarta.persistence.GenerationType;
 @Table(name = "Projects")
 public class Project {
 
-    // public Project(String title, String description, User user) {
-    //     this.title = title;
-    //     this.description = description;
-    //     this.user = user;
-    // }
-
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
@@ -29,22 +28,21 @@ public class Project {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @CreationTimestamp
+    @Column(name = "creation_date", nullable = false, updatable = false)
+    private LocalDate creationDate;
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
-
+    
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
-
+    
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
-
+    
     public User getUser() { return user; }
     public void setUser(User user) { this.user = user; }
 
-    @Override
-    public String toString() {
-        return String.format(
-            "Project[id=%d, title='%s', description='%s', user='%s']",
-            id, title, description, user.getName());
-    }
+    public LocalDate getCreationDate() {return creationDate;}
 }
