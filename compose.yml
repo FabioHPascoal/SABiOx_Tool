@@ -1,0 +1,26 @@
+services:
+  SABiOxDB:
+    image: 'mysql'
+    volumes:
+      - db-SABiOx:/var/lib/mysql
+    ports:
+      - '3307:3306'
+    container_name: SABiOxDB
+    environment:
+      MYSQL_DATABASE: SABiOxDB
+      MYSQL_ROOT_PASSWORD: 3LlxEf3!8#bA*%5j&58$
+
+  backend:
+    build:
+      context: ./back-sabiox_tool
+    ports:
+      - "8080:8080"
+    depends_on:
+      - SABiOxDB
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3307/SABiOxDB
+      SPRING_DATASOURCE_USERNAME: backend
+      SPRING_DATASOURCE_PASSWORD: 3LlxEf3!8#bA*%5j&58$
+
+volumes:
+  db-SABiOx:
