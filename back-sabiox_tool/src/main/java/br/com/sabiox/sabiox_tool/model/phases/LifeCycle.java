@@ -8,6 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -15,7 +16,7 @@ import jakarta.persistence.Table;
 public class LifeCycle {
     
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
     @CreationTimestamp
@@ -24,8 +25,15 @@ public class LifeCycle {
     @CreationTimestamp
     private LocalDate endDate;
 
+    @ManyToOne
+    private Phase phase;
+    
     public Long getId() {return id;}
+
     public LocalDate getStartDate() {return startDate;}
     public LocalDate getEndDate() {return endDate;}
+
+    public Phase getPhase() {return phase;}
+    public void setPhase(Phase phase) {this.phase = phase;}
 
 }

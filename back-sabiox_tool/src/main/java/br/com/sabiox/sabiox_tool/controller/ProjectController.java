@@ -37,7 +37,7 @@ public class ProjectController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProjectResponseDTO> updatePeca(@PathVariable Long id, @Valid @RequestBody ProjectRequestDTO projectRequestDTO) {
+    public ResponseEntity<ProjectResponseDTO> updateProject(@PathVariable Long id, @Valid @RequestBody ProjectRequestDTO projectRequestDTO) {
         return ResponseEntity.ok(projectService.update(id, projectRequestDTO));
     }
 

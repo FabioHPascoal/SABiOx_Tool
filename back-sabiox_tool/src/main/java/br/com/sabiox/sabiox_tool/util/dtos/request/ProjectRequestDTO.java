@@ -12,7 +12,7 @@ public record ProjectRequestDTO(
     @Size(max = 400, message = "Description cannot exceed 400 characters")
     String description,
 
-    @NotNull(message = "User ID field is mandatory")
+    @NotNull(message = "User Id field is mandatory")
     Long userId
 ) {
 }

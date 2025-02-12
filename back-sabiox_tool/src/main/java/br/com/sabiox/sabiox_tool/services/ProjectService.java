@@ -36,7 +36,6 @@ public class ProjectService {
         BeanUtils.copyProperties(projectRequestDTO, project);
         Project projectSaved = projectRepository.save(project);
 
-        System.out.println(project);
         return ProjectMapper.toDto(projectSaved);
     }
 
@@ -63,7 +62,7 @@ public class ProjectService {
 
     public void delete(Long id) {
         Project project = projectRepository.findById(id)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Projeto não encontrado."));
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found."));
 
         projectRepository.delete(project);
     }

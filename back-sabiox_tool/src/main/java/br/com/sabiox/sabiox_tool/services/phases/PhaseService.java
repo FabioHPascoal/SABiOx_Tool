@@ -63,7 +63,7 @@ public class PhaseService {
 
     public void delete(Long id) {
         Phase phase = phaseRepository.findById(id)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Projeto não encontrado."));
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Phase not found."));
 
         phaseRepository.delete(phase);
     }

@@ -43,7 +43,7 @@ public class PhaseController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PhaseResponseDTO> updatePeca(@PathVariable Long id, @Valid @RequestBody PhaseRequestDTO phaseRequestDTO) {
+    public ResponseEntity<PhaseResponseDTO> updatePhase(@PathVariable Long id, @Valid @RequestBody PhaseRequestDTO phaseRequestDTO) {
         return ResponseEntity.ok(phaseService.update(id, phaseRequestDTO));
     }
 
