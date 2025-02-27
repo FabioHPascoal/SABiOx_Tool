@@ -23,15 +23,16 @@ public class Project {
 
     private String title;
     private String description;
-
+    private Boolean isActive;
+   
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
+    
     @CreationTimestamp
     @Column(name = "creation_date", nullable = false, updatable = false)
     private LocalDate creationDate;
-
+    
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     
@@ -43,6 +44,9 @@ public class Project {
     
     public User getUser() { return user; }
     public void setUser(User user) { this.user = user; }
-
+    
+    public Boolean isActive() {return isActive;}
+    public void setActive(Boolean isActive) {this.isActive = isActive;}
+ 
     public LocalDate getCreationDate() {return creationDate;}
 }

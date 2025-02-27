@@ -31,6 +31,9 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
+    private Boolean isActive;
+
     @CreationTimestamp
     @Column(name = "creation_date", nullable = false, updatable = false)
     private LocalDate creationDate;
@@ -48,6 +51,9 @@ public class User {
 
     public String getPassword() {return password;}
     public void setPassword(String password) {this.password = password;}
+
+    public Boolean isActive() {return isActive;}
+    public void setActive(Boolean isActive) {this.isActive = isActive;}
 
     public LocalDate getCreationDate() {return creationDate;}
 }

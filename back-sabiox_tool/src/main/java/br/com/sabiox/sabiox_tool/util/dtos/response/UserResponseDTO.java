@@ -7,5 +7,6 @@ public record UserResponseDTO(Long userId,
                               String username,
                               String email,
                               String password,
-                              LocalDate creationDate)
+                              LocalDate creationDate,
+                              Boolean isActive)
 {}

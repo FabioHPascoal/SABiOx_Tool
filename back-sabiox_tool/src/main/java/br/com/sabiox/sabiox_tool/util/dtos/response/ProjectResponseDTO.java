@@ -6,5 +6,6 @@ public record ProjectResponseDTO(Long projectId,
                                  Long userId,
                                  String title,
                                  String description,
-                                 LocalDate creationDate) 
+                                 LocalDate creationDate,
+                                 Boolean isActive)
 {}

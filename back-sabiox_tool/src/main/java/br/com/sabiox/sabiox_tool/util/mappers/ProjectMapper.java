@@ -14,7 +14,8 @@ public class ProjectMapper {
                 project.getUser().getId(),
                 project.getTitle(),
                 project.getDescription(),
-                project.getCreationDate()
+                project.getCreationDate(),
+                project.isActive()
         );
     }
 

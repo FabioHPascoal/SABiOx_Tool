@@ -30,6 +30,10 @@ public class PhaseService {
         Project project = projectRepository.findById(phaseRequestDTO.projectId())
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found."));
             
+        if (project.isActive() == false) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Project is not active.");
+        }
+        
         Phase phase = new Phase();
         
         phase.setProject(project);

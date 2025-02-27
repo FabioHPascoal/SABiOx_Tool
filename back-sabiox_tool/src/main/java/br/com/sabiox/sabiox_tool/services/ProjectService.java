@@ -29,8 +29,13 @@ public class ProjectService {
     public ProjectResponseDTO create(ProjectRequestDTO projectRequestDTO) {
         User user = userRepository.findById(projectRequestDTO.userId())
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found."));
-            
+        
+        if (user.isActive() == false) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is not active.");
+        }
+        
         Project project = new Project();
+        project.setActive(true);
         
         project.setUser(user);
         BeanUtils.copyProperties(projectRequestDTO, project);
@@ -50,6 +55,14 @@ public class ProjectService {
         List<Project> projects = projectRepository.findAll();
         return ProjectMapper.toDtoList(projects);
     }
+    
+    public List<ProjectResponseDTO> readAllAtivos() {
+        List<Project> projects = projectRepository.findAll()
+                .stream().filter(Project::isActive)
+                .toList();
+
+        return ProjectMapper.toDtoList(projects);
+    }
 
     public ProjectResponseDTO update(Long id, ProjectRequestDTO projectRequestDTO) {
         Project project = projectRepository.findById(id)
@@ -63,7 +76,10 @@ public class ProjectService {
     public void delete(Long id) {
         Project project = projectRepository.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found."));
+        
+        project.setActive(false);
+        projectRepository.save(project);
 
-        projectRepository.delete(project);
+        // projectRepository.delete(project);
     }
 }

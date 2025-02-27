@@ -24,6 +24,7 @@ public class UserService {
 
     public UserResponseDTO create(UserRequestDTO userRequestDTO) { 
         User user = new User();
+        user.setActive(true);
 
         BeanUtils.copyProperties(userRequestDTO, user);
         User userSaved = userRepository.save(user);
@@ -43,6 +44,14 @@ public class UserService {
         return UserMapper.toDtoList(users);
     }
 
+    public List<UserResponseDTO> readAllAtivos() {
+        List<User> users = userRepository.findAll()
+                .stream().filter(User::isActive)
+                .toList();
+
+        return UserMapper.toDtoList(users);
+    }
+
     public UserResponseDTO update(Long id, UserRequestDTO userRequestDTO) {
         User user = userRepository.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found."));
@@ -56,6 +65,9 @@ public class UserService {
         User user = userRepository.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found."));
 
-        userRepository.delete(user);
+        user.setActive(false);
+        userRepository.save(user);
+        
+        // userRepository.delete(user);
     }
 }
