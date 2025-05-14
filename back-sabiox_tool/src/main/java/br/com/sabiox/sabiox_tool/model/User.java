@@ -1,19 +1,23 @@
 package br.com.sabiox.sabiox_tool.model;
 
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.List;
 
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-@Entity
-@Table(name = "Users")
-public class User {
+@Table(name = "users")
+@Entity(name = "users")
+@Setter
+@Getter
+public class User implements UserDetails {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,7 +26,7 @@ public class User {
     @Column(nullable = false)
     private String name;
 
-    @Column(unique = true, nullable = false, name = "user_name")
+    @Column(unique = true, nullable = false, name = "username")
     private String username;
 
     @Column(unique = true, nullable = false)
@@ -31,29 +35,38 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Boolean isActive;
+    private UserRole role;
 
     @CreationTimestamp
     @Column(name = "creation_date", nullable = false, updatable = false)
     private LocalDate creationDate;
 
-    public Long getId() {return id;}
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return switch (this.role) {
+            case USER -> List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        };
+    }
 
-    public String getName() {return name;}
-    public void setName(String name) {this.name = name;}
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
 
-    public String getUsername() {return username;}
-    public void setUsername(String username) {this.username = username;}
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
 
-    public String getEmail() {return email;}
-    public void setEmail(String email) {this.email = email;}
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
 
-    public String getPassword() {return password;}
-    public void setPassword(String password) {this.password = password;}
-
-    public Boolean isActive() {return isActive;}
-    public void setActive(Boolean isActive) {this.isActive = isActive;}
-
-    public LocalDate getCreationDate() {return creationDate;}
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

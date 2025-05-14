@@ -30,7 +30,7 @@ public class ProjectService {
         User user = userRepository.findById(projectRequestDTO.userId())
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found."));
         
-        if (user.isActive() == false) {
+        if (!user.isEnabled()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is not active.");
         }
         
