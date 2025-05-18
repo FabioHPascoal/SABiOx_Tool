@@ -1,28 +1,12 @@
 <template>
-  <q-layout view="hhh lpR lFr">
+  <q-layout view="hHh LpR lff">
 
-    <q-header class="bg-primary text-white" height-hint="98">
-      <q-toolbar>
-        <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
+    <!-- <desktop-header v-if="$q.screen.gt.sm" v-model:left-drawer="leftDrawerVal" :profile-links="profileLinks" />
+    <mobile-header v-else v-model:left-drawer="leftDrawerVal" :profile-links="profileLinks" /> -->
+    
+    <desktop-header/>
 
-        <q-toolbar-title>
-          <q-avatar>
-            <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
-          </q-avatar>
-        </q-toolbar-title>
-
-      </q-toolbar>
-
-      <!-- <q-tabs align="left">
-        <q-route-tab to="/page1" label="Page One" />
-        <q-route-tab to="/page2" label="Page Two" />
-        <q-route-tab to="/page3" label="Page Three" />
-      </q-tabs> -->
-    </q-header>
-
-    <q-drawer show-if-above v-model="leftDrawerOpen" side="left" bordered>
-      <!-- drawer content -->
-    </q-drawer>
+    <!-- <app-drawer v-model="leftDrawerVal" :links="links" /> -->
 
     <q-page-container>
       <router-view />
@@ -32,18 +16,61 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { defineComponent } from 'vue'
 
-export default {
-  setup () {
-    const leftDrawerOpen = ref(false)
+// import { storeToRefs } from 'pinia'
+// import { useAuthStore } from 'src/stores/auth'
+// import useMainLayout from 'src/composables/mainLayout'
 
-    return {
-      leftDrawerOpen,
-      toggleLeftDrawer () {
-        leftDrawerOpen.value = !leftDrawerOpen.value
-      }
-    }
-  }
-}
+export default defineComponent({
+  name: 'MainLayout'
+})
+</script>
+
+<script setup>
+
+// import AppDrawer from './AppDrawer.vue'
+// import MobileHeader from './MobileHeader.vue'
+import DesktopHeader from './DesktopHeader.vue'
+
+// const { leftDrawerVal } = useMainLayout()
+
+// const authStore = useAuthStore()
+
+// const links = computed(() => {
+//   const allDrawerLinks = [
+//     {
+//       name: 'requirements',
+//       label: 'Requirements',
+//       to: { name: 'App.Project.Requirements' },
+//     },
+//     {
+//       name: 'setup',
+//       label: 'Setup',
+//       to: { name: 'App.Project.Setup' }
+//     },
+//     {
+//       name: 'capture',
+//       label: 'Capture',
+//       to: { name: 'App.Project.Capture' }
+//     },
+//     {
+//       name: 'design',
+//       label: 'Design',
+//       to: { name: 'App.Project.Design' }
+//     },
+//     {
+//       name: 'implementation',
+//       label: 'Implementation',
+//       to: { name: 'App.Project.Implementation' },
+//     }
+//   ]
+
+//   return allDrawerLinks.filter((link) => {
+//     return typeof link.showIf === 'function'
+//       ? link.showIf()
+//       : typeof link.showIf === 'undefined' || !!link.showIf
+//   })
+// })
+
 </script>

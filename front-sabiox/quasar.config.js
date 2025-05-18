@@ -70,15 +70,19 @@ export default defineConfig((/* ctx */) => {
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#devserver
+    // devServer: {
+    //   port: 9000,
+    //   proxy: {
+    //     '/api': {
+    //       target: 'http://localhost:8080',
+    //       changeOrigin: true,
+    //       rewrite: path => path.replace(/^\/api/, '/api')
+    //     }
+    //   }
+    // }
     devServer: {
-      port: 9000,
-      proxy: {
-        '/api': {
-          target: 'http://localhost:8080',
-          changeOrigin: true,
-          rewrite: path => path.replace(/^\/api/, '/api')
-        }
-      }
+      // https: true
+      open: true // opens browser window automatically
     },
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#framework
@@ -96,7 +100,11 @@ export default defineConfig((/* ctx */) => {
       // directives: [],
 
       // Quasar plugins
-      plugins: []
+      plugins: [
+        'Notify',
+        'Loading',
+        'Dialog'
+      ]
     },
 
     // animations: 'all', // --- includes all animations
