@@ -1,12 +1,8 @@
 package br.com.sabiox.sabiox_tool.controller;
 
-import br.com.sabiox.sabiox_tool.model.User;
+import br.com.sabiox.sabiox_tool.domain.user.*;
+import br.com.sabiox.sabiox_tool.infra.security.TokenService;
 import br.com.sabiox.sabiox_tool.services.AuthService;
-import br.com.sabiox.sabiox_tool.services.TokenService;
-import br.com.sabiox.sabiox_tool.util.dtos.request.LoginRequestDTO;
-import br.com.sabiox.sabiox_tool.util.dtos.request.RegisterRequestDTO;
-import br.com.sabiox.sabiox_tool.util.dtos.response.LoginResponseDTO;
-import br.com.sabiox.sabiox_tool.util.dtos.response.RegisterResponseDTO;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -30,14 +26,14 @@ public class AuthController {
     private TokenService tokenService;
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid LoginRequestDTO data) {
+    public ResponseEntity<br.com.sabiox.sabiox_tool.domain.user.LoginResponseDTO> login(@RequestBody @Valid LoginRequestDTO data) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
 
         var token = tokenService.generateToken((User) auth.getPrincipal());
         var user = (User) auth.getPrincipal();
 
-        return ResponseEntity.ok(new LoginResponseDTO(token, user));
+        return ResponseEntity.ok(new LoginResponseDTO(token, new UserDTO(user)));
     }
 
     @DeleteMapping("/logout")
@@ -51,8 +47,8 @@ public class AuthController {
         return ok ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
     }
 
-    @PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> register(@RequestBody @Valid RegisterRequestDTO body) {
+    @PostMapping(value = "/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> register(@ModelAttribute @Valid RegisterRequestDTO body) {
         if (this.authService.findByEmail(body.email()) != null) {
             return ResponseEntity.badRequest().body(Map.of("error", "This email is already being used."));
         }
@@ -72,6 +68,8 @@ public class AuthController {
                 newUser.getId(),
                 newUser.getName(),
                 newUser.getEmail(),
+                newUser.getRole(),
+                newUser.getAvatarUrl(),
                 token
         ));
     }

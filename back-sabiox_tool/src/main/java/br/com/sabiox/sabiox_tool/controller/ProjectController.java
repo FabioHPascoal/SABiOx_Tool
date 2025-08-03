@@ -2,53 +2,59 @@ package br.com.sabiox.sabiox_tool.controller;
 
 import java.util.List;
 
+import br.com.sabiox.sabiox_tool.domain.project.Project;
+import br.com.sabiox.sabiox_tool.domain.project.ProjectRequestDTO;
+import br.com.sabiox.sabiox_tool.domain.project.ProjectResponseDTO;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import br.com.sabiox.sabiox_tool.services.ProjectService;
-import br.com.sabiox.sabiox_tool.util.dtos.request.ProjectRequestDTO;
-import br.com.sabiox.sabiox_tool.util.dtos.response.ProjectResponseDTO;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/projects")
+@RequiredArgsConstructor
+@RequestMapping("/api")
 public class ProjectController {
+    @Autowired
+    private ProjectService projectService;
 
-    private final ProjectService projectService;
-
-    public ProjectController(final ProjectService projectService) {
-        this.projectService = projectService;
-    }
-
-    @PostMapping
+    @PostMapping("project")
     public ResponseEntity<ProjectResponseDTO> createProject(@Valid @RequestBody ProjectRequestDTO projectRequestDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(projectService.create(projectRequestDTO));
+        Project project = projectService.create(projectRequestDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ProjectResponseDTO(project));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ProjectResponseDTO> readProject(@PathVariable Long id) {
-        return ResponseEntity.ok(projectService.read(id));
+    @GetMapping("/project/{id}")
+    public ResponseEntity<ProjectResponseDTO> getProject(@PathVariable Long id) {
+        Project project = projectService.get(id);
+        return ResponseEntity.status(HttpStatus.OK).body(new ProjectResponseDTO(project));
     }
 
-    @GetMapping
-    public ResponseEntity<List<ProjectResponseDTO>> readAllProjects() {
-        return ResponseEntity.ok(projectService.readAll());
+    @GetMapping("/admin/projects")
+    public ResponseEntity<List<ProjectResponseDTO>> getAllProjects() {
+        List<Project> projects = projectService.getAll();
+        return ResponseEntity.ok(projectService.getAll().stream().map(ProjectResponseDTO::new).toList());
     }
 
-    @GetMapping("/active")
-    public ResponseEntity<List<ProjectResponseDTO>> readAllActiveProjects() {
-        return ResponseEntity.ok(projectService.readAllAtivos());
+    @GetMapping("/projects/enabled")
+    public ResponseEntity<List<ProjectResponseDTO>> getAllEnabledProjects() {
+        List<Project> projects = projectService.getAllEnabled();
+        return ResponseEntity.ok(projectService.getAllEnabled().stream().map(ProjectResponseDTO::new).toList());
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ProjectResponseDTO> updateProject(@PathVariable Long id, @Valid @RequestBody ProjectRequestDTO projectRequestDTO) {
-        return ResponseEntity.ok(projectService.update(id, projectRequestDTO));
+    @PutMapping("/project/{id}")
+    public ResponseEntity<ProjectResponseDTO> updateProject(@PathVariable Long id,
+                                                            @Valid @RequestBody ProjectRequestDTO projectRequestDTO) {
+        Project project = projectService.update(id, projectRequestDTO);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(new ProjectResponseDTO(project));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProject(@PathVariable Long id) {
-        projectService.delete(id);
+    @PutMapping("/project/disable/{id}")
+    public ResponseEntity<Void> disableProject(@PathVariable Long id) {
+        projectService.disable(id);
         return ResponseEntity.noContent().build();
     }
 

@@ -1,85 +1,92 @@
 package br.com.sabiox.sabiox_tool.services;
 
-import br.com.sabiox.sabiox_tool.model.Project;
-import br.com.sabiox.sabiox_tool.model.User;
-import br.com.sabiox.sabiox_tool.repository.ProjectRepository;
-import br.com.sabiox.sabiox_tool.repository.UserRepository;
-import br.com.sabiox.sabiox_tool.util.dtos.request.ProjectRequestDTO;
-import br.com.sabiox.sabiox_tool.util.dtos.response.ProjectResponseDTO;
-import br.com.sabiox.sabiox_tool.util.mappers.ProjectMapper;
+import br.com.sabiox.sabiox_tool.domain.project.Project;
+import br.com.sabiox.sabiox_tool.domain.project.ProjectRequestDTO;
+import br.com.sabiox.sabiox_tool.domain.user.User;
+import br.com.sabiox.sabiox_tool.domain.sabiox.phase.Phase;
+import br.com.sabiox.sabiox_tool.domain.sabiox.phase.PhaseType;
+import br.com.sabiox.sabiox_tool.repositories.ProjectRepository;
+import br.com.sabiox.sabiox_tool.repositories.UserRepository;
 
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class ProjectService {
+    @Autowired
+    private ProjectRepository projectRepository;
 
-    private final ProjectRepository projectRepository;
-    private final UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     public ProjectService(ProjectRepository projectRepository, UserRepository userRepository) {
         this.projectRepository = projectRepository;
         this.userRepository = userRepository;
     }
 
-    public ProjectResponseDTO create(ProjectRequestDTO projectRequestDTO) {
+    public Project create(ProjectRequestDTO projectRequestDTO) {
         User user = userRepository.findById(projectRequestDTO.userId())
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found."));
-        
-        if (!user.isEnabled()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is not active.");
-        }
-        
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found."));
+
+        if (!user.isEnabled()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is not enabled.");
+
+        Project project = getProject(projectRequestDTO, user);
+
+        return projectRepository.save(project);
+    }
+
+    private static Project getProject(ProjectRequestDTO projectRequestDTO, User user) {
         Project project = new Project();
-        project.setActive(true);
-        
         project.setUser(user);
-        BeanUtils.copyProperties(projectRequestDTO, project);
-        Project projectSaved = projectRepository.save(project);
+        project.setTitle(projectRequestDTO.title());
+        project.setDescription(projectRequestDTO.description());
+        project.setIsEnabled(true);
 
-        return ProjectMapper.toDto(projectSaved);
+        List<Phase> phases = List.of(
+                new Phase(null, project, PhaseType.REQUIREMENTS),
+                new Phase(null, project, PhaseType.SETUP),
+                new Phase(null, project, PhaseType.CAPTURE),
+                new Phase(null, project, PhaseType.DESIGN),
+                new Phase(null, project, PhaseType.IMPLEMENTATION)
+        );
+
+        project.setPhases(phases);
+        return project;
     }
 
-    public ProjectResponseDTO read(Long id) {
-        Project project = projectRepository.findById(id)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found."));
-       
-        return ProjectMapper.toDto(project);
+    public Project get(Long id) {
+        return projectRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found."));
     }
 
-    public List<ProjectResponseDTO> readAll() {
-        List<Project> projects = projectRepository.findAll();
-        return ProjectMapper.toDtoList(projects);
+    public List<Project> getAll() {
+        return projectRepository.findAll();
     }
-    
-    public List<ProjectResponseDTO> readAllAtivos() {
-        List<Project> projects = projectRepository.findAll()
-                .stream().filter(Project::isActive)
+
+    public List<Project> getAllEnabled() {
+        return projectRepository.findAll()
+                .stream().filter(Project::getIsEnabled)
                 .toList();
-
-        return ProjectMapper.toDtoList(projects);
     }
 
-    public ProjectResponseDTO update(Long id, ProjectRequestDTO projectRequestDTO) {
+    public Project update(Long id, ProjectRequestDTO projectRequestDTO) {
         Project project = projectRepository.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found."));
         
         BeanUtils.copyProperties(projectRequestDTO, project);
-        Project projectUpdated = projectRepository.save(project);
-        return ProjectMapper.toDto(projectUpdated);
+        return projectRepository.save(project);
     }
 
-    public void delete(Long id) {
+    public void disable(Long id) {
         Project project = projectRepository.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found."));
-        
-        project.setActive(false);
-        projectRepository.save(project);
 
-        // projectRepository.delete(project);
+        project.setIsEnabled(false);
+        projectRepository.save(project);
     }
 }
