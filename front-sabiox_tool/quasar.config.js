@@ -12,7 +12,8 @@ export default defineConfig((/* ctx */) => {
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-vite/boot-files
     boot: [
-      'axios'
+      'axios',
+      'components'
     ],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#css
@@ -88,11 +89,12 @@ export default defineConfig((/* ctx */) => {
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#framework
     framework: {
+      cssAddon: true,
       config: {
         brand: {
-          primary: '#1976D2',
-          secondary: '#26A69A',
-          accent: '#9C27B0',
+          primary: '#1D263B',
+          secondary: '#A0EADE',
+          accent: '#5a5a5a',
 
           background: '#ffffff',     // fundo padrão (modo claro)
           surface: '#f5f5f5',        // superfícies tipo cards
@@ -100,7 +102,6 @@ export default defineConfig((/* ctx */) => {
           onBackground: '#323333',   // texto padrão
           border: '#323333',         // bordas e divisores
 
-          // Mantém o restante das cores padrão
           positive: '#21BA45',
           negative: '#C10015',
           info: '#31CCEC',

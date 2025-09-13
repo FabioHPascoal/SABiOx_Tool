@@ -130,3 +130,89 @@ export const minLengthRule = (min, msg, options) => {
     return minValueFn(v.length) === true || errorMsg
   }
 }
+
+/**
+ *
+ * @param {string|function} [msg]
+ * @param {object} [options]
+ * @returns {validationFn = val => true | string}
+ */
+export const validNameRule = (msg, options) => {
+  const defaults = {
+    required: true
+  }
+  const { required } = Object.assign(defaults, options)
+
+  return val => {
+    if (!required && !val) return true
+
+    let errorMsg = typeof msg === 'function' ? msg(val) : msg
+
+    errorMsg ??= 'Informe o nome completo.'
+
+    const name = val.trim()
+
+    // Partes separadas por espaço ou por um hífen
+    const parts = name.split(/(\s|-)+/)
+    if (parts.length < 2) return errorMsg
+
+    parts.sort((a, b) => b.length - a.length)
+
+    // Valida nomes com pelo menos 1 parte com 3 letras e 1 parte com 2 letras (Ex: Yam-ni, Dak-Ho)
+    return (parts[0].length >= 3 && parts[1].length >= 2) || errorMsg
+  }
+}
+
+/**
+ *
+ * @param {string|function} [msg]
+ * @param {object} [options]
+ * @returns {validationFn = val => true | string}
+ */
+export const validUsernameRule = (msg, options) => {
+  const defaults = {
+    required: true,
+    trim: true
+  }
+  const { required, trim } = Object.assign(defaults, options)
+
+  const usernameRegex = /^[a-zA-Z][a-zA-Z0-9._]{2,19}$/
+
+  return val => {
+    if (!required && !val) return true
+
+    let errorMsg = typeof msg === 'function' ? msg(val) : msg
+    errorMsg ??= 'Nome de usuário inválido. Deve começar com uma letra e conter entre 3 e 20 caracteres, incluindo apenas letras, números, ponto ou sublinhado.'
+
+    if (typeof val !== 'string') return errorMsg
+
+    const username = trim ? val.trim() : val
+
+    return usernameRegex.test(username) || errorMsg
+  }
+}
+
+/**
+ *
+ * @param {any} refVal
+ * @param {string|function} [msg]
+ * @param {object} [options]
+ * @returns {validationFn = val => true | string}
+ */
+export const sameValueRule = (refVal, msg, options) => {
+  const defaults = {
+    locales: 'pt-BR',
+    sensitivity: 'variant',
+    localeCompare: false
+  }
+  const { locales, sensitivity, localeCompare } = Object.assign(defaults, options)
+
+  return val => {
+    let errorMsg = typeof msg === 'function' ? msg(val, refVal) : msg
+    errorMsg ??= 'Os valores não coincidem.'
+
+    return localeCompare
+      ? val.localeCompare(refVal, locales, { sensitivity }) === 0 || errorMsg
+      : val === refVal || errorMsg
+  }
+}

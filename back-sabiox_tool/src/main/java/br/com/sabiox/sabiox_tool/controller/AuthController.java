@@ -62,6 +62,10 @@ public class AuthController {
 
         newUser = this.authService.createUser(newUser);
 
+        if (body.avatar() != null) {
+            newUser.setAvatarUrl(this.authService.saveAvatar(newUser.getId(), body.avatar()));
+        }
+
         var token = tokenService.generateToken(newUser);
 
         return ResponseEntity.ok(new RegisterResponseDTO(

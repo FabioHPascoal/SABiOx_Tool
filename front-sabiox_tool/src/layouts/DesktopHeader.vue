@@ -19,6 +19,13 @@
               {{ userName }}
             </q-item-label>
           </q-item-section>
+          <q-item-section side>
+            <the-avatar
+              :avatar-url="userAvatarUrl"
+              default-avatar-icon="account_circle"
+              text-color="white"
+            />
+          </q-item-section>
         </q-item>
       </q-btn>
     </q-toolbar>
@@ -27,6 +34,7 @@
 
 <script>
 import { computed, defineComponent } from 'vue'
+
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from 'src/stores/auth'
 
@@ -53,6 +61,7 @@ const { getUser } = storeToRefs(authStore)
 // })
 
 const userName = computed(() => getUser.value?.name ?? 'Usuário')
+const userAvatarUrl = computed(() => getUser.value?.avatarUrl)
 
 // const toggleLeftDrawer = () => {
 //   leftDrawerVal.value = !leftDrawerVal.value

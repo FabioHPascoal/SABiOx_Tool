@@ -1,9 +1,11 @@
 package br.com.sabiox.sabiox_tool.domain.user;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import br.com.sabiox.sabiox_tool.domain.ProjectUser.ProjectUser;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
@@ -13,8 +15,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-@Table(name = "users")
-@Entity(name = "users")
+@Table(name = "user")
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
@@ -41,6 +43,9 @@ public class User implements UserDetails {
 
     @Column(name = "avatar_url")
     private String avatarUrl;
+
+    @OneToMany(mappedBy = "user")
+    private List<ProjectUser> projectUsers = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -1,5 +1,6 @@
 package br.com.sabiox.sabiox_tool.infra.security;
 
+import br.com.sabiox.sabiox_tool.domain.user.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -47,13 +48,43 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/api/auth/login", "/api/auth/register").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/api/auth/logout").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/auth/login").anonymous()
+                        .requestMatchers(HttpMethod.POST, "/api/auth/register").anonymous()
+                        .requestMatchers(HttpMethod.POST, "/api/auth/logout").anonymous()
+                        .requestMatchers("/api/admin/**").hasRole(UserRole.ADMIN.toString())
+                        .requestMatchers(HttpMethod.GET, "/uploads/avatars/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+                .logout(logout -> logout
+                        .logoutUrl("/api/auth/logout")
+                        .logoutSuccessHandler((request, response, authentication) -> {
+                            response.setStatus(200);
+                        })
+                )
                 .build();
     }
+
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        return http
+//                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+//                .csrf(AbstractHttpConfigurer::disable)
+//                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//                .authorizeHttpRequests(auth -> auth
+//                        .requestMatchers(HttpMethod.POST, "/api/auth/login", "/api/auth/register").permitAll()
+//                        .requestMatchers(HttpMethod.DELETE, "/api/auth/logout").authenticated()
+//                        .anyRequest().authenticated()
+//                )
+//                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+//                .logout(logout -> logout
+//                        .logoutUrl("/api/auth/logout")
+//                        .logoutSuccessHandler((request, response, authentication) -> {
+//                            response.setStatus(200);
+//                        })
+//                )
+//                .build();
+//    }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {

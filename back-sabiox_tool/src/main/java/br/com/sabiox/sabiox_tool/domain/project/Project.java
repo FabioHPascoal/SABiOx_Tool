@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.sabiox.sabiox_tool.domain.ProjectUser.ProjectUser;
 import br.com.sabiox.sabiox_tool.domain.sabiox.phase.Phase;
 import br.com.sabiox.sabiox_tool.domain.user.User;
 import jakarta.persistence.*;
@@ -13,7 +14,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
-@Table(name = "projects")
+@Table(name = "project")
 @Entity
 @Getter
 @Setter
@@ -27,15 +28,17 @@ public class Project {
     private String title;
     private String description;
     private Boolean isEnabled;
-   
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProjectUser> participants = new ArrayList<>();
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Phase> phases = new ArrayList<>();
     
     @CreationTimestamp
     @Column(name = "creation_date", nullable = false, updatable = false)
     private LocalDate creationDate;
+
+    @Column(name = "conclusion_date")
+    private LocalDate conclusionDate;
 }

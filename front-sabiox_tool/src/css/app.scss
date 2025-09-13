@@ -1,3 +1,15 @@
 body {
     font-family: 'Consolas', 'Courier New', monospace;
 }
+
+/* texto */
+.text-onPrimary { color: var(--q-onPrimary) !important; }
+.text-onBackground { color: var(--q-onBackground) !important; }
+
+/* fundo */
+.bg-onPrimary { background: var(--q-onPrimary) !important; }
+.bg-onBackground { background: var(--q-onBackground) !important; }
+
+/* borda */
+.border-onPrimary { border-color: var(--q-onPrimary) !important; }
+.border-onBackground { border-color: var(--q-onBackground) !important; }

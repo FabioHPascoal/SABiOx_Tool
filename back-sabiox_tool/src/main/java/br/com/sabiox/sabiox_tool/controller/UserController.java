@@ -1,11 +1,13 @@
 package br.com.sabiox.sabiox_tool.controller;
 
+import br.com.sabiox.sabiox_tool.domain.ProjectUser.ProjectUserDTO;
 import br.com.sabiox.sabiox_tool.domain.user.IndexUsersRequestDTO;
 import br.com.sabiox.sabiox_tool.domain.user.User;
 import br.com.sabiox.sabiox_tool.domain.user.UserDTO;
 import br.com.sabiox.sabiox_tool.domain.user.UserRole;
 import br.com.sabiox.sabiox_tool.repositories.UserRepository;
 import br.com.sabiox.sabiox_tool.services.AuthService;
+import br.com.sabiox.sabiox_tool.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,9 @@ import java.util.List;
 public class UserController {
     @Autowired
     private AuthService authService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private UserRepository userRepository;
@@ -71,5 +76,10 @@ public class UserController {
         this.authService.deleteAvatar(authUser.getId());
 
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/user/projects")
+    public ResponseEntity<List<ProjectUserDTO>> getProjects(@AuthenticationPrincipal User authUser) {
+        return ResponseEntity.ok(this.userService.getAllProjects(authUser));
     }
 }

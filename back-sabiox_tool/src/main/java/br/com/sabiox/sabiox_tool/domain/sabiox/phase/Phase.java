@@ -22,4 +22,9 @@ public class Phase {
     private Project project;
 
     private PhaseType phaseType;
+
+    public Phase(Project project, PhaseType phaseType) {
+        this.project = project;
+        this.phaseType = phaseType;
+    }
 }

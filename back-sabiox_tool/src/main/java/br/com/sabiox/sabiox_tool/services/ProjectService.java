@@ -1,7 +1,11 @@
 package br.com.sabiox.sabiox_tool.services;
 
+import br.com.sabiox.sabiox_tool.domain.ProjectUser.ParticipationType;
+import br.com.sabiox.sabiox_tool.domain.ProjectUser.ProjectUser;
 import br.com.sabiox.sabiox_tool.domain.project.Project;
 import br.com.sabiox.sabiox_tool.domain.project.ProjectRequestDTO;
+import br.com.sabiox.sabiox_tool.domain.project.ProjectResponseDTO;
+import br.com.sabiox.sabiox_tool.domain.project.ProjectResponseReducedDTO;
 import br.com.sabiox.sabiox_tool.domain.user.User;
 import br.com.sabiox.sabiox_tool.domain.sabiox.phase.Phase;
 import br.com.sabiox.sabiox_tool.domain.sabiox.phase.PhaseType;
@@ -12,68 +16,78 @@ import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class ProjectService {
     @Autowired
-    private ProjectRepository projectRepository;
-
-    @Autowired
     private UserRepository userRepository;
 
-    public ProjectService(ProjectRepository projectRepository, UserRepository userRepository) {
-        this.projectRepository = projectRepository;
-        this.userRepository = userRepository;
-    }
+    @Autowired
+    private ProjectRepository projectRepository;
 
-    public Project create(ProjectRequestDTO projectRequestDTO) {
-        User user = userRepository.findById(projectRequestDTO.userId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found."));
+    @Transactional
+    public ProjectResponseDTO create(ProjectRequestDTO projectRequestDTO, String userEmail) {
+        User user = userRepository.findByEmail(userEmail);
 
+        if (user == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.");
         if (!user.isEnabled()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is not enabled.");
 
-        Project project = getProject(projectRequestDTO, user);
-
-        return projectRepository.save(project);
-    }
-
-    private static Project getProject(ProjectRequestDTO projectRequestDTO, User user) {
         Project project = new Project();
-        project.setUser(user);
         project.setTitle(projectRequestDTO.title());
         project.setDescription(projectRequestDTO.description());
         project.setIsEnabled(true);
 
-        List<Phase> phases = List.of(
-                new Phase(null, project, PhaseType.REQUIREMENTS),
-                new Phase(null, project, PhaseType.SETUP),
-                new Phase(null, project, PhaseType.CAPTURE),
-                new Phase(null, project, PhaseType.DESIGN),
-                new Phase(null, project, PhaseType.IMPLEMENTATION)
-        );
+        ProjectUser projectOwner = new ProjectUser();
+        projectOwner.setUser(user);
+        projectOwner.setProject(project);
+        projectOwner.setParticipationType(ParticipationType.OWNER);
+        projectOwner.setEmail(userEmail);
 
-        project.setPhases(phases);
-        return project;
+        project.getParticipants().add(projectOwner);
+
+        project.getPhases().add(new Phase(project, PhaseType.REQUIREMENTS));
+        project.getPhases().add(new Phase(project, PhaseType.SETUP));
+        project.getPhases().add(new Phase(project, PhaseType.CAPTURE));
+        project.getPhases().add(new Phase(project, PhaseType.DESIGN));
+        project.getPhases().add(new Phase(project, PhaseType.IMPLEMENTATION));
+
+        project = projectRepository.save(project);
+
+        return new ProjectResponseDTO(project);
     }
 
-    public Project get(Long id) {
-        return projectRepository.findById(id)
+    @Transactional(readOnly = true)
+    public ProjectResponseDTO get(Long id) {
+        Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found."));
+
+        return new ProjectResponseDTO(project);
     }
 
-    public List<Project> getAll() {
-        return projectRepository.findAll();
+    @Transactional(readOnly = true)
+    public List<ProjectResponseDTO> getAll() {
+        List<Project> projects = projectRepository.findAll(
+                Sort.by(Sort.Direction.DESC, "creationDate").and(
+                Sort.by(Sort.Direction.ASC, "title")));
+
+        return projects.stream().map(ProjectResponseDTO::new).toList();
     }
 
-    public List<Project> getAllEnabled() {
-        return projectRepository.findAll()
-                .stream().filter(Project::getIsEnabled)
-                .toList();
+    @Transactional(readOnly = true)
+    public List<ProjectResponseReducedDTO> getAllEnabled() {
+        List<Project> projects = projectRepository.findByIsEnabledTrue(
+                Sort.by(Sort.Direction.DESC, "creationDate").and(
+                Sort.by(Sort.Direction.ASC, "title")));
+
+        return projects.stream().map(ProjectResponseReducedDTO::new).toList();
     }
 
+    @Transactional
     public Project update(Long id, ProjectRequestDTO projectRequestDTO) {
         Project project = projectRepository.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found."));
@@ -82,6 +96,7 @@ public class ProjectService {
         return projectRepository.save(project);
     }
 
+    @Transactional
     public void disable(Long id) {
         Project project = projectRepository.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found."));

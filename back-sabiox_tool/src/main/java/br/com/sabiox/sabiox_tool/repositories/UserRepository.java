@@ -10,7 +10,6 @@ import br.com.sabiox.sabiox_tool.domain.user.User;
 import java.util.List;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long>,
-        JpaSpecificationExecutor<User> {
+public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
     User findByEmail(String email);
 }
