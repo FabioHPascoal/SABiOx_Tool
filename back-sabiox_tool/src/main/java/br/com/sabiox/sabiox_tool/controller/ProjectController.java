@@ -2,10 +2,7 @@ package br.com.sabiox.sabiox_tool.controller;
 
 import java.util.List;
 
-import br.com.sabiox.sabiox_tool.domain.project.Project;
-import br.com.sabiox.sabiox_tool.domain.project.ProjectRequestDTO;
-import br.com.sabiox.sabiox_tool.domain.project.ProjectResponseDTO;
-import br.com.sabiox.sabiox_tool.domain.project.ProjectResponseReducedDTO;
+import br.com.sabiox.sabiox_tool.domain.project.*;
 import br.com.sabiox.sabiox_tool.domain.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,4 +55,14 @@ public class ProjectController {
         projectService.disable(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/project/{id}")
+    public ResponseEntity<Void> addMember(@AuthenticationPrincipal User authUser,
+                                          @PathVariable Long id,
+                                          @RequestBody AddMemberRequestDTO request) {
+
+        projectService.addMember(authUser.getId(), id, request.email());
+        return ResponseEntity.noContent().build();
+    }
+
 }

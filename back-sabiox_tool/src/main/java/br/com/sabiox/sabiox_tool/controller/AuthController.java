@@ -49,7 +49,7 @@ public class AuthController {
 
     @PostMapping(value = "/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> register(@ModelAttribute @Valid RegisterRequestDTO body) {
-        if (this.authService.findByEmail(body.email()) != null) {
+        if (this.authService.findByEmail(body.email()).isPresent()) {
             return ResponseEntity.badRequest().body(Map.of("error", "This email is already being used."));
         }
 

@@ -48,18 +48,12 @@
   <q-page padding :class="{ 'q-pt-none': $q.screen.gt.sm }">
     <div class="q-mb-md q-gutter-sm">
       <q-btn
+        @click="projectsTable.openNewProjectDialog"
         label="Create project"
         icon="add_circle_outline"
         padding="sm md"
         no-caps
       />
-      <!-- <q-btn
-        @click="manifestationsTable.openNewProjectDialog"
-        label="Create project"
-        icon="add_circle_outline"
-        padding="sm md"
-        no-caps
-      /> -->
       <q-btn-toggle
         v-model="filterMode"
         no-caps
@@ -75,13 +69,16 @@
       />
     </div>
 
-    <project-list :projects-composable="projectsTable"/>
+    <project-list :projects-composable="{ 
+      ...projectsTable, 
+      rows: filteredRows 
+    }"/>
 
   </q-page>
 </template>
 
 <script>
-import { defineComponent, onMounted, reactive, ref, watch } from 'vue'
+import { computed, defineComponent, onMounted, reactive, ref, watch } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from 'src/boot/axios'
 // import { storeToRefs } from 'pinia'
@@ -89,36 +86,37 @@ import { api } from 'src/boot/axios'
 
 import { useTable } from 'src/composables/table'
 
+import NewProjectDialog from 'src/components/dialogs/projects/NewProjectDialog.vue'
+
 const useProjectsTable = () => {
   const $q = useQuasar()
-
+  
   const { rows, isLoading, onRequest } = useTable(async () => {
     const { data } = await api.get('user/projects')
-    console.log(data)
     return data
   })
 
-  // const openNewProjectDialog = () => {
-  //   let created = false
+  const openNewProjectDialog = () => {
+    let created = false
 
-  //   $q.dialog({
-  //     component: NewManifestationDialog,
-  //     componentProps: {
-  //       onCreate: () => {
-  //         created = true
-  //       }
-  //     }
-  //   })
-  //     .onDismiss(async () => {
-  //       if (created) await onRequest()
-  //     })
-  // }
+    $q.dialog({
+      component: NewProjectDialog,
+      componentProps: {
+        onCreate: () => {
+          created = true
+        }
+      }
+    })
+      .onDismiss(async () => {
+        if (created) await onRequest()
+      })
+  }
 
   return {
     rows,
     onRequest,
-    isLoading
-    // openNewProjectDialog
+    isLoading,
+    openNewProjectDialog
   }
 }
 
@@ -138,6 +136,19 @@ const FILTER_MODE_SHARED = 'shared'
 
 const filterMode = ref(FILTER_MODE_ALL)
 
+const filteredRows = computed(() => {
+  if (filterMode.value === FILTER_MODE_ALL) {
+    return projectsTable.rows
+  }
+  if (filterMode.value === FILTER_MODE_OWNED) {
+    return projectsTable.rows.filter(p => p.role === 'OWNER')
+  }
+  if (filterMode.value === FILTER_MODE_SHARED) {
+    return projectsTable.rows.filter(p => p.role === 'MEMBER')
+  }
+  return null
+})
+
 const setHash = (hash) => {
   window.location.hash = hash
 }
@@ -146,13 +157,14 @@ watch(filterMode, (val) => {
   setHash(val)
 })
 
-onMounted(() => {
+onMounted(async () => {
   const hash = window.location.hash.replace('#', '')
 
   if (hash === FILTER_MODE_ALL || hash === FILTER_MODE_OWNED || hash === FILTER_MODE_SHARED) {
     filterMode.value = hash
   }
 
+  await projectsTable.onRequest()
 })
 
 </script>

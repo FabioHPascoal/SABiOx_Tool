@@ -13,6 +13,7 @@ import br.com.sabiox.sabiox_tool.repositories.ProjectRepository;
 import br.com.sabiox.sabiox_tool.repositories.UserRepository;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +33,8 @@ public class ProjectService {
 
     @Transactional
     public ProjectResponseDTO create(ProjectRequestDTO projectRequestDTO, String userEmail) {
-        User user = userRepository.findByEmail(userEmail);
-
-        if (user == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.");
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found."));
         if (!user.isEnabled()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is not enabled.");
 
         Project project = new Project();
@@ -102,6 +102,31 @@ public class ProjectService {
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found."));
 
         project.setIsEnabled(false);
+        projectRepository.save(project);
+    }
+
+    @Transactional
+    public void addMember(Long ownerID, Long projectId, String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Member user not found."));
+
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found."));
+
+        if (!ownerID.equals(Objects.requireNonNull(project.getParticipants().stream().
+                filter(owner -> owner.getParticipationType() == ParticipationType.OWNER).
+                findFirst().orElse(null)).getUser().getId())) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "You're not the owner of this project.");
+        }
+
+        ProjectUser newMember = new ProjectUser();
+        newMember.setUser(user);
+        newMember.setProject(project);
+        newMember.setParticipationType(ParticipationType.MEMBER);
+        newMember.setEmail(email);
+
+        project.getParticipants().add(newMember);
+
         projectRepository.save(project);
     }
 }

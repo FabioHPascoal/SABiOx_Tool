@@ -8,8 +8,10 @@ import org.springframework.stereotype.Repository;
 import br.com.sabiox.sabiox_tool.domain.user.User;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
-    User findByEmail(String email);
+    Optional<User> findByEmail(String email);
+    Optional<User> findByUsername(String username);
 }

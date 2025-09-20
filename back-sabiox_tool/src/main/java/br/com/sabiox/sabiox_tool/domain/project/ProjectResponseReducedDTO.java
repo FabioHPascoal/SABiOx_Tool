@@ -10,7 +10,7 @@ public record ProjectResponseReducedDTO(Long projectId,
                                         String title,
                                         String description,
                                         LocalDate creationDate,
-                                        Boolean isActive)
+                                        Boolean isEnabled)
 {
     public ProjectResponseReducedDTO(Project project) {
         this(

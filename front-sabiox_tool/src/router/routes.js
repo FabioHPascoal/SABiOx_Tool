@@ -34,9 +34,9 @@ const routes = [
         component: () => import('src/pages/app/ProjectManagerPage.vue')
       },
       {
-        path: 'project',
+        path: 'project/:id',
         name: 'App.Project',
-        component: () => import('layouts/MainLayout.vue')
+        component: () => import('src/pages/app/ProjectPage.vue')
       }
     ]
   },

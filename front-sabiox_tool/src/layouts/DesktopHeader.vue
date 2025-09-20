@@ -4,18 +4,17 @@
     background-color: var(--q-background); 
     color: var(--q-onBackground)">
     <q-toolbar class="q-pr-none">
-      <!-- <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" /> -->
+
+      <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
+
       <router-link :to="{ name: 'App.Home' }" class="flex flex-center">
         <app-logo light style="width: 100px" />
       </router-link>
       <q-space />
-      <q-btn
-        padding="md"
-        no-caps
-        flat>
+      <q-btn padding="sm" no-caps flat>
         <q-item dense class="q-pr-xs">
           <q-item-section>
-            <q-item-label class="text-weight-medium text-right">
+            <q-item-label class="text-weight-bold text-right">
               {{ userName }}
             </q-item-label>
           </q-item-section>
@@ -24,6 +23,7 @@
               :avatar-url="userAvatarUrl"
               default-avatar-icon="account_circle"
               text-color="white"
+              size="xl"
             />
           </q-item-section>
         </q-item>
@@ -46,25 +46,25 @@ export default defineComponent({
 <script setup>
 import AppLogo from 'src/components/common/AppLogo.vue'
 
-// const props = defineProps({
-//   leftDrawer: Boolean
-// })
+const props = defineProps({
+  leftDrawer: Boolean
+})
 
-// const emit = defineEmits(['update:left-drawer'])
+const emit = defineEmits(['update:left-drawer'])
 
 const authStore = useAuthStore()
 const { getUser } = storeToRefs(authStore)
 
-// const leftDrawerVal = computed({
-//   get: () => props.leftDrawer,
-//   set: (newValue) => emit('update:left-drawer', newValue)
-// })
+const leftDrawerVal = computed({
+  get: () => props.leftDrawer,
+  set: (newValue) => emit('update:left-drawer', newValue)
+})
 
 const userName = computed(() => getUser.value?.name ?? 'Usuário')
 const userAvatarUrl = computed(() => getUser.value?.avatarUrl)
 
-// const toggleLeftDrawer = () => {
-//   leftDrawerVal.value = !leftDrawerVal.value
-// }
+const toggleLeftDrawer = () => {
+  leftDrawerVal.value = !leftDrawerVal.value
+}
 
 </script>
