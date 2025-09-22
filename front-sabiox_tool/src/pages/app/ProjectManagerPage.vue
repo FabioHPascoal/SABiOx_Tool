@@ -80,13 +80,11 @@
 <script>
 import { computed, defineComponent, onMounted, reactive, ref, watch } from 'vue'
 import { useQuasar } from 'quasar'
-import { api } from 'src/boot/axios'
-// import { storeToRefs } from 'pinia'
-// import { useAuthStore } from 'src/stores/auth'
 
+import { api } from 'src/boot/axios'
 import { useTable } from 'src/composables/table'
 
-import NewProjectDialog from 'src/components/dialogs/projects/NewProjectDialog.vue'
+import NewProjectDialog from 'src/components/dialogs/projects/CreateEditProjectDialog.vue'
 
 const useProjectsTable = () => {
   const $q = useQuasar()

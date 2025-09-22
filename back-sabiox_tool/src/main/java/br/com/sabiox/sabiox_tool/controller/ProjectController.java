@@ -44,15 +44,16 @@ public class ProjectController {
     }
 
     @PutMapping("/project/{id}")
-    public ResponseEntity<ProjectResponseDTO> updateProject(@PathVariable Long id,
+    public ResponseEntity<ProjectResponseDTO> updateProject(@PathVariable Long projectId,
+                                                            @AuthenticationPrincipal User authUser,
                                                             @Valid @RequestBody ProjectRequestDTO projectRequestDTO) {
-        Project project = projectService.update(id, projectRequestDTO);
+        Project project = projectService.update(projectId, authUser.getId(), projectRequestDTO);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(new ProjectResponseDTO(project));
     }
 
     @PutMapping("/project/disable/{id}")
-    public ResponseEntity<Void> disableProject(@PathVariable Long id) {
-        projectService.disable(id);
+    public ResponseEntity<Void> disableProject(@AuthenticationPrincipal User authUser,@PathVariable Long id) {
+        projectService.disable(id, authUser.getId());
         return ResponseEntity.noContent().build();
     }
 

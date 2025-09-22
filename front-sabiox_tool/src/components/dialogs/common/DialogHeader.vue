@@ -55,7 +55,7 @@ export default defineComponent({
 <style lang="scss">
 .sticky-header {
   position: sticky;
-  background-color: var(--q-dark);
+  background-color: var(--q-background);
   top: 0;
   z-index: $z-max + 1;
 }

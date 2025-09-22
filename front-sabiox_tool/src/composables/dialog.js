@@ -14,7 +14,7 @@ import { ConfirmationDialogExitConfirmation as confirmExit } from 'src/utils/dia
  * @param {function} [onClose]
  * @returns
  */
-// export const useDialog = ({ onDialogHide, onOKClick, onCancelClick }, onClose) => {
+
 export const useDialog = ({ onDialogHide, onCancelClick }, onClose) => {
   const $q = useQuasar()
 

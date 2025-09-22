@@ -18,7 +18,8 @@
         </q-item-section>
       </q-item>
 
-      <q-separator inset />
+      <!-- <q-separator inset /> -->
+
       <!-- <q-item class="q-mt-md q-mb-sm">
         <q-item-section>
           <q-item-label v-if="!manifestation?.isPublic" caption lines="2">
@@ -73,7 +74,7 @@
 </template>
 
 <script>
-import { defineComponent, computed } from 'vue'
+import { defineComponent } from 'vue'
 import { useRouter } from 'vue-router'
 
 export default defineComponent({
@@ -82,12 +83,24 @@ export default defineComponent({
 </script>
 
 <script setup>
+
 const props = defineProps({
   project: {
     type: Object,
     required: true
   }
 })
+
+// const authStore = useAuthStore()
+// const { getUser } = storeToRefs(authStore)
+
+// const isOwner = computed(() => {
+//   const userID = getUser.value?.id
+
+//   if (userID === props.project.owner.id) return true
+
+//   return false
+// })
 
 const $router = useRouter()
 

@@ -88,18 +88,30 @@ public class ProjectService {
     }
 
     @Transactional
-    public Project update(Long id, ProjectRequestDTO projectRequestDTO) {
-        Project project = projectRepository.findById(id)
+    public Project update(Long projectId, Long userId, ProjectRequestDTO projectRequestDTO) {
+        Project project = projectRepository.findById(projectId)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found."));
+
+        if (!userId.equals(Objects.requireNonNull(project.getParticipants().stream().
+                filter(owner -> owner.getParticipationType() == ParticipationType.OWNER).
+                findFirst().orElse(null)).getUser().getId())) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "You're not the owner of this project.");
+        }
         
         BeanUtils.copyProperties(projectRequestDTO, project);
         return projectRepository.save(project);
     }
 
     @Transactional
-    public void disable(Long id) {
-        Project project = projectRepository.findById(id)
+    public void disable(Long projectId, Long userId) {
+        Project project = projectRepository.findById(projectId)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found."));
+
+        if (!userId.equals(Objects.requireNonNull(project.getParticipants().stream().
+                filter(owner -> owner.getParticipationType() == ParticipationType.OWNER).
+                findFirst().orElse(null)).getUser().getId())) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "You're not the owner of this project.");
+        }
 
         project.setIsEnabled(false);
         projectRepository.save(project);
@@ -107,7 +119,7 @@ public class ProjectService {
 
     @Transactional
     public void addMember(Long ownerID, Long projectId, String email) {
-        User user = userRepository.findByEmail(email)
+        User addedUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Member user not found."));
 
         Project project = projectRepository.findById(projectId)
@@ -120,7 +132,7 @@ public class ProjectService {
         }
 
         ProjectUser newMember = new ProjectUser();
-        newMember.setUser(user);
+        newMember.setUser(addedUser);
         newMember.setProject(project);
         newMember.setParticipationType(ParticipationType.MEMBER);
         newMember.setEmail(email);

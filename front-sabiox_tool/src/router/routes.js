@@ -36,7 +36,7 @@ const routes = [
       {
         path: 'project/:id',
         name: 'App.Project',
-        component: () => import('src/pages/app/ProjectPage.vue')
+        component: () => import('src/pages/app/project/ProjectPage.vue')
       }
     ]
   },
