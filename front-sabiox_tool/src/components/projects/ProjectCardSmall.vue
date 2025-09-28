@@ -9,7 +9,7 @@
     <q-list dense class="q-gutter-y-xs q-py-sm">
       <q-item class="justify-between">
         <q-item-section>
-          <q-item-label lines="1" class="text-subtitle2 text-onBackground">
+          <q-item-label lines="1" class="text-subtitle2 primary">
             {{ project.title }}
           </q-item-label>
         </q-item-section>
@@ -106,7 +106,7 @@ const $router = useRouter()
 
 const onClick = () => {
   $router.push({
-    name: 'App.Project',
+    name: 'App.Project.RequirementPhase.DefinePurpose',
     params: { id: props.project?.projectId }
   })
 }

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16.54 68.65">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #323333;
+      }
+
+      .cls-2 {
+        fill: #d5d4d4;
+      }
+
+      .cls-3 {
+        fill: none;
+        stroke: #323333;
+        stroke-linecap: round;
+        stroke-miterlimit: 10;
+        stroke-width: 2px;
+      }
+    </style>
+  </defs>
+  <g id="Dimensions">
+    <g>
+      <polygon class="cls-2" points="14.54 51.69 0 66.23 0 2.42 14.54 16.96 14.54 51.69"/>
+      <g>
+        <line class="cls-3" x1="1" y1="2.42" x2="15.54" y2="16.96"/>
+        <line class="cls-3" x1="15.54" y1="51.69" x2="1" y2="66.23"/>
+        <line class="cls-3" x1="15.54" y1="16.96" x2="15.54" y2="51.69"/>
+      </g>
+      <g>
+        <line class="cls-3" x1="9.66" y1="29.54" x2="4.88" y2="34.32"/>
+        <line class="cls-3" x1="4.88" y1="34.33" x2="9.66" y2="39.11"/>
+      </g>
+      <rect class="cls-2" y="1.42" width="1" height="1"/>
+      <polygon class="cls-1" points="3.25 3.25 0 0 0 2.83 1.84 4.67 3.25 3.25"/>
+      <polygon class="cls-1" points="3.25 65.4 0 68.65 0 65.82 1.84 63.98 3.25 65.4"/>
+    </g>
+  </g>
+</svg>

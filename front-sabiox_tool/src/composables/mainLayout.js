@@ -7,10 +7,10 @@ export default function () {
 
   const authStore = useAuthStore()
 
-  const leftDrawer = ref($q.screen.gt.sm)
-  const leftDrawerVal = computed({
-    get: () => leftDrawer.value,
-    set: (newValue) => { leftDrawer.value = newValue }
+  const appDrawer = ref($q.screen.gt.sm)
+  const appDrawerVal = computed({
+    get: () => appDrawer.value,
+    set: (newValue) => { appDrawer.value = newValue }
   })
 
   onMounted(async () => {
@@ -18,7 +18,7 @@ export default function () {
   })
 
   return {
-    leftDrawer,
-    leftDrawerVal
+    appDrawer,
+    appDrawerVal
   }
 }

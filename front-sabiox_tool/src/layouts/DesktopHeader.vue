@@ -1,12 +1,9 @@
 <template>
   <q-header style="
-    border-bottom: 2px solid var(--q-border);
+    border-bottom: 3px solid var(--q-border);
     background-color: var(--q-background); 
     color: var(--q-onBackground)">
     <q-toolbar class="q-pr-none">
-
-      <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
-
       <router-link :to="{ name: 'App.Home' }" class="flex flex-center">
         <app-logo light style="width: 100px" />
       </router-link>
@@ -28,6 +25,7 @@
           </q-item-section>
         </q-item>
       </q-btn>
+      <q-btn class="q-mr-md" dense flat round icon="menu" @click="toggleAppDrawer" />
     </q-toolbar>
   </q-header>
 </template>
@@ -47,24 +45,24 @@ export default defineComponent({
 import AppLogo from 'src/components/common/AppLogo.vue'
 
 const props = defineProps({
-  leftDrawer: Boolean
+  appDrawer: Boolean
 })
 
-const emit = defineEmits(['update:left-drawer'])
+const emit = defineEmits(['update:app-drawer'])
 
 const authStore = useAuthStore()
 const { getUser } = storeToRefs(authStore)
 
-const leftDrawerVal = computed({
-  get: () => props.leftDrawer,
-  set: (newValue) => emit('update:left-drawer', newValue)
+const appDrawerVal = computed({
+  get: () => props.appDrawer,
+  set: (newValue) => emit('update:app-drawer', newValue)
 })
 
 const userName = computed(() => getUser.value?.name ?? 'Usuário')
 const userAvatarUrl = computed(() => getUser.value?.avatarUrl)
 
-const toggleLeftDrawer = () => {
-  leftDrawerVal.value = !leftDrawerVal.value
+const toggleAppDrawer = () => {
+  appDrawerVal.value = !appDrawerVal.value
 }
 
 </script>

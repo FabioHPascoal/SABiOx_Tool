@@ -7,26 +7,20 @@ const routes = [
         path: '',
         name: 'Login',
         component: () => import('src/pages/LoginPage.vue'),
-        meta: {
-          guestOnly: true
-        }
+        meta: { guestOnly: true }
       },
       {
         path: 'register',
         name: 'Register',
         component: () => import('src/pages/RegisterPage.vue'),
-        meta: {
-          guestOnly: true
-        }
+        meta: { guestOnly: true }
       }
     ]
   },
   {
     path: '/app',
     component: () => import('layouts/MainLayout.vue'),
-    meta: {
-      authOnly: true
-    },
+    meta: { authOnly: true },
     children: [
       {
         path: '',
@@ -35,13 +29,28 @@ const routes = [
       },
       {
         path: 'project/:id',
-        name: 'App.Project',
-        component: () => import('src/pages/app/project/ProjectPage.vue')
+        name: 'App.Project.RequirementPhase.DefinePurpose',
+        component: () => import('src/pages/app/project/requirementPhase/DefinePurposePage.vue')
+      },
+      {
+        path: 'project/:id/identifyDomain',
+        name: 'App.Project.RequirementPhase.IdentifyDomain',
+        component: () => import('src/pages/app/project/requirementPhase/IdentifyDomainPage.vue')
+      },
+      {
+        path: 'project/:id/elicitRequirements',
+        name: 'App.Project.RequirementPhase.ElicitRequirements',
+        component: () => import('src/pages/app/project/requirementPhase/ElicitRequirementsPage.vue')
+      },
+      {
+        path: 'project/:id/identifySubdomains',
+        name: 'App.Project.RequirementPhase.IdentifySubdomains',
+        component: () => import('src/pages/app/project/requirementPhase/IdentifySubdomainsPage.vue')
       }
     ]
   },
 
-  // Error 404
+  // 404
   {
     path: '/:catchAll(.*)*',
     component: () => import('pages/ErrorNotFound.vue')

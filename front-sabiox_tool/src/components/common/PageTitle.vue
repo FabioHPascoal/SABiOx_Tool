@@ -40,7 +40,7 @@ const titleClass = computed(() => {
 
   if (props.spaced && isDesktop) _classes.push('q-layout-padding')
 
-  _classes.push(isDesktop ? 'text-primary' : 'text-dark bg-primary text-center q-pb-xs q-px-sm')
+  _classes.push(isDesktop ? 'text-primary' : 'text-onPrimary bg-primary text-center q-pb-xs q-px-sm')
 
   return _classes
 })
