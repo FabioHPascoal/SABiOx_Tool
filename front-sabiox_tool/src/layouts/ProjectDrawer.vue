@@ -1,56 +1,3 @@
-<!-- <template>
-  <div>
-    <q-drawer
-      v-model="projectDrawerVal"
-      side="left"
-      :width="200"
-      class="bg-Primary text-onPrimary desktop-drawer"
-      elevated
-    >
-    <q-drawer
-      v-model="modelVal"
-      side="left"
-      :behavior="isMobile ? 'mobile' : 'desktop'"
-      :width="200"
-      class="bg-Primary text-onPrimary desktop-drawer"
-      elevated
-    >
-      <div v-if="isMobile" class="q-pr-xs q-pt-xs absolute-top-right z-top">
-        <q-btn @click="modelVal = false" icon="close" flat round />
-      </div>
-
-      <drawer-link
-      v-for="link in links"
-      :key="link.name"
-      v-bind="link"
-      />
-
-    </q-drawer>
-
-    <q-btn
-      class="fixed z-top"
-      :style="{
-        top: '50%',
-        left: projectDrawerVal ? '200px' : '50px',
-        transform: 'translateY(-50%)'
-      }"
-      dense
-      round
-      unelevated
-      color="accent"
-      :icon="projectDrawerVal ? 'chevron_left' : 'chevron_right'"
-      @click="toggleProjectDrawer"
-    />
-
-  </div>
-
-</template> -->
-
-<!-- <q-header style="
-    border-bottom: 2px solid var(--q-border);
-    background-color: var(--q-background); 
-    color: var(--q-onBackground)"> -->
-
 <template>
 
   <div>
@@ -58,6 +5,7 @@
       style="border-right: 3px solid var(--q-border)"
       v-model="projectDrawerVal"
       side="left"
+      behavior="desktop"
       :width="280"
       class="bg-onPrimary text-onPrimary desktop-drawer"
     >

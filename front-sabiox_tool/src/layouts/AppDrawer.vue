@@ -1,18 +1,10 @@
 <template>
-  <!-- <q-drawer
+  <q-drawer
     v-model="modelVal"
     side="right"
     :behavior="isMobile ? 'mobile' : 'desktop'"
     :width="200"
-    class="bg-Primary text-onPrimary desktop-drawer"
-    elevated
-  > -->
-  <q-drawer
-    v-model="modelVal"
-    side="right"
-    behavior="mobile"
-    :width="200"
-    class="bg-primary text-onPrimary"
+    class="bg-primary text-onPrimary desktop-drawer"
     elevated
   >
     <div v-if="isMobile" class="q-pr-xs q-pt-xs absolute-top-right z-top">

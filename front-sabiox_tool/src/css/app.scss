@@ -13,3 +13,6 @@ body {
 /* borda */
 .border-onPrimary { border-color: var(--q-onPrimary) !important; }
 .border-onBackground { border-color: var(--q-onBackground) !important; }
+
+/* botão pressionado */
+.bg-btnPressed { background: var(--q-btnPressed) !important; }

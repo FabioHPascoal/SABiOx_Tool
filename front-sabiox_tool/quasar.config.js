@@ -101,6 +101,7 @@ export default defineConfig((/* ctx */) => {
           onPrimary: '#ffffff',      // texto sobre botão primário
           onBackground: '#323333',   // texto padrão
           border: '#323333',         // bordas e divisores
+          btnPressed: '#d4d4d4ff',   // botão pressionado
 
           positive: '#21BA45',
           negative: '#C10015',

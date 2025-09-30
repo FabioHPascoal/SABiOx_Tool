@@ -1,7 +1,5 @@
 <template>
-    <page-title :title="innerProject?.title || 'Project'">
-
-    </page-title>
+  teste
 </template>
 
 <script>
