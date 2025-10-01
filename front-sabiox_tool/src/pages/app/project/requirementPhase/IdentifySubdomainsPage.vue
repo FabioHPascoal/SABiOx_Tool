@@ -1,13 +1,14 @@
-<template lang="">
-    <div>
-        
+<template>
+  <page-title title="Identify Subdomain" />
+  <div class="q-pa-md">
+    <div v-if="projectStore.loading">Carregando...</div>
+    <div v-else-if="projectStore.project">
+      <p>Projeto atual: <strong>{{ projectStore.project.title }}</strong></p>
     </div>
+  </div>
 </template>
-<script>
-export default {
-    
-}
+
+<script setup>
+import { useProjectStore } from 'src/stores/project'
+const projectStore = useProjectStore()
 </script>
-<style lang="">
-    
-</style>

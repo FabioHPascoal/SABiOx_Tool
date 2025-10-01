@@ -11,8 +11,9 @@ body {
 .bg-onBackground { background: var(--q-onBackground) !important; }
 
 /* borda */
-.border-onPrimary { border-color: var(--q-onPrimary) !important; }
-.border-onBackground { border-color: var(--q-onBackground) !important; }
+.my-border {
+  background-color: var(--q-border);
+}
 
 /* botão pressionado */
 .bg-btnPressed { background: var(--q-btnPressed) !important; }

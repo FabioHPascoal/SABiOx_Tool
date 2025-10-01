@@ -23,6 +23,7 @@
       <drawer-link
         v-for="link in links"
         :key="link.name"
+        color="onPrimary"
         v-bind="link"
       />
     </q-list>

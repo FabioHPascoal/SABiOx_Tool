@@ -23,16 +23,16 @@ export default defineConfig((/* ctx */) => {
 
     // https://github.com/quasarframework/quasar/tree/dev/extras
     extras: [
-      // 'ionicons-v4',
-      // 'mdi-v7',
-      // 'fontawesome-v6',
-      // 'eva-icons',
-      // 'themify',
-      // 'line-awesome',
-      // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
+      'material-icons',
+      'mdi-v7',
+      'ionicons-v4',
+      'eva-icons',
+      'fontawesome-v6',
+      'themify',
+      'line-awesome',
+      'bootstrap-icons',
 
-      'roboto-font', // optional, you are not bound to it
-      'material-icons', // optional, you are not bound to it
+      'roboto-font'
     ],
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#build
@@ -99,7 +99,7 @@ export default defineConfig((/* ctx */) => {
           background: '#ffffff',     // fundo padrão (modo claro)
           surface: '#f5f5f5',        // superfícies tipo cards
           onPrimary: '#ffffff',      // texto sobre botão primário
-          onBackground: '#323333',   // texto padrão
+          onBackground: '#2e2e2eff',   // texto padrão
           border: '#323333',         // bordas e divisores
           btnPressed: '#d4d4d4ff',   // botão pressionado
 

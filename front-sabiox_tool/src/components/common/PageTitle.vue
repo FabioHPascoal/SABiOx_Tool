@@ -49,7 +49,7 @@ const titleClass = computed(() => {
 
 <style lang="scss" scoped>
 .page-title {
-  margin-top: -5px;
-  padding-top: 5px;
+  margin-top: 0px;
+  padding-top: 0px;
 }
 </style>
