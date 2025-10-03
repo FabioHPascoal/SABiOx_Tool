@@ -18,11 +18,7 @@ public record ProjectResponseDTO(Long projectId,
     public ProjectResponseDTO(Project project) {
         this(
                 project.getId(),
-
-                Objects.requireNonNull(project.getParticipants().stream().
-                        filter(user -> user.getParticipationType() == ParticipationType.OWNER).
-                        findFirst().orElse(null)).getUser().getId(),
-
+                project.getOwner().getId(),
                 project.getTitle(),
                 project.getDescription(),
                 project.getCreationDate(),

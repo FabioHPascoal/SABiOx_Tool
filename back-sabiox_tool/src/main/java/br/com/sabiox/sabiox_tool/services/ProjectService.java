@@ -10,6 +10,7 @@ import br.com.sabiox.sabiox_tool.domain.user.User;
 import br.com.sabiox.sabiox_tool.domain.sabiox.phase.Phase;
 import br.com.sabiox.sabiox_tool.domain.sabiox.phase.PhaseType;
 import br.com.sabiox.sabiox_tool.repositories.ProjectRepository;
+import br.com.sabiox.sabiox_tool.repositories.ProjectUserRepository;
 import br.com.sabiox.sabiox_tool.repositories.UserRepository;
 
 import java.util.List;
@@ -30,6 +31,9 @@ public class ProjectService {
 
     @Autowired
     private ProjectRepository projectRepository;
+
+    @Autowired
+    private ProjectUserRepository projectUserRepository;
 
     @Transactional
     public ProjectResponseDTO create(ProjectRequestDTO projectRequestDTO, String userEmail) {
@@ -90,26 +94,29 @@ public class ProjectService {
     @Transactional
     public Project update(Long projectId, Long userId, ProjectRequestDTO projectRequestDTO) {
         Project project = projectRepository.findById(projectId)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found."));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found."));
 
-        if (!userId.equals(Objects.requireNonNull(project.getParticipants().stream().
-                filter(owner -> owner.getParticipationType() == ParticipationType.OWNER).
-                findFirst().orElse(null)).getUser().getId())) {
+        boolean isOwner = projectUserRepository.existsByProjectIdAndUserIdAndParticipationType(
+                projectId, userId, ParticipationType.OWNER);
+
+        if (!isOwner) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "You're not the owner of this project.");
         }
-        
+
         BeanUtils.copyProperties(projectRequestDTO, project);
         return projectRepository.save(project);
     }
+
 
     @Transactional
     public void disable(Long projectId, Long userId) {
         Project project = projectRepository.findById(projectId)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found."));
 
-        if (!userId.equals(Objects.requireNonNull(project.getParticipants().stream().
-                filter(owner -> owner.getParticipationType() == ParticipationType.OWNER).
-                findFirst().orElse(null)).getUser().getId())) {
+        boolean isOwner = projectUserRepository.existsByProjectIdAndUserIdAndParticipationType(
+                projectId, userId, ParticipationType.OWNER);
+
+        if (!isOwner) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "You're not the owner of this project.");
         }
 
@@ -118,16 +125,17 @@ public class ProjectService {
     }
 
     @Transactional
-    public void addMember(Long ownerID, Long projectId, String email) {
+    public void addMember(Long ownerId, Long projectId, String email) {
         User addedUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Member user not found."));
 
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found."));
 
-        if (!ownerID.equals(Objects.requireNonNull(project.getParticipants().stream().
-                filter(owner -> owner.getParticipationType() == ParticipationType.OWNER).
-                findFirst().orElse(null)).getUser().getId())) {
+        boolean isOwner = projectUserRepository.existsByProjectIdAndUserIdAndParticipationType(
+                projectId, ownerId, ParticipationType.OWNER);
+
+        if (!isOwner) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "You're not the owner of this project.");
         }
 

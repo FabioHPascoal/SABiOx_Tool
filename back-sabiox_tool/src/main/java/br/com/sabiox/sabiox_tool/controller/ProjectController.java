@@ -15,7 +15,6 @@ import br.com.sabiox.sabiox_tool.services.ProjectService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api")
 public class ProjectController {
     @Autowired
@@ -65,5 +64,4 @@ public class ProjectController {
         projectService.addMember(authUser.getId(), id, request.email());
         return ResponseEntity.noContent().build();
     }
-
 }

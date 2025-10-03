@@ -10,7 +10,7 @@
     >
       <q-item class="q-px-md q-pt-sm q-pb-sm items-center justify-between">
         <q-item-section>
-          <q-item-label class="text-primary text-h6">
+          <q-item-label class="text-onBackground text-h6">
             {{ projectStore.project?.title || 'Project' }}
           </q-item-label>
         </q-item-section>
@@ -19,10 +19,10 @@
             flat
             dense
             round
-            icon="settings"
             size="md"
-            color="primary"
+            color="background"
           >
+            <q-icon name="settings" color="onBackground" />
           </q-btn>
         </q-item-section>
       </q-item>

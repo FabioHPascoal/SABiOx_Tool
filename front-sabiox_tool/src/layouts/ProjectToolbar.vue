@@ -6,11 +6,12 @@
 
 <template>
   <div
-    class="q-pa-sm row no-wrap justify-center q-gutter-sm"
+    class="q-py-xs row no-wrap justify-center"
     style="border-bottom: 3px solid var(--q-border)"
   >
     <q-btn
       v-for="action in actions"
+      class="q-mx-xs"
       :key="action.label"
       :ripple="false"
       dense

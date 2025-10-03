@@ -99,7 +99,7 @@ export default defineConfig((/* ctx */) => {
           background: '#ffffff',     // fundo padrão (modo claro)
           surface: '#f5f5f5',        // superfícies tipo cards
           onPrimary: '#ffffff',      // texto sobre botão primário
-          onBackground: '#2e2e2eff',   // texto padrão
+          onBackground: '#2e2e2eff', // texto padrão
           border: '#323333',         // bordas e divisores
           btnPressed: '#d4d4d4ff',   // botão pressionado
 

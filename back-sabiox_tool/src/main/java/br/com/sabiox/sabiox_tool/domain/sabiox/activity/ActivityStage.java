@@ -1,6 +1,6 @@
-package br.com.sabiox.sabiox_tool.domain.sabiox.lifecycle;
+package br.com.sabiox.sabiox_tool.domain.sabiox.activity;
 
-public enum LifeCycleStage {
+public enum ActivityStage {
     NOT_STARTED,
     IN_PROGRESS,
     DOCUMENTATION,
