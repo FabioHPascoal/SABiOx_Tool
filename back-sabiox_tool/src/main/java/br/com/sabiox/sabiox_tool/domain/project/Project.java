@@ -1,13 +1,12 @@
 package br.com.sabiox.sabiox_tool.domain.project;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import br.com.sabiox.sabiox_tool.domain.ProjectUser.ParticipationType;
 import br.com.sabiox.sabiox_tool.domain.ProjectUser.ProjectUser;
 import br.com.sabiox.sabiox_tool.domain.sabiox.phase.Phase;
+import br.com.sabiox.sabiox_tool.domain.sabiox.phase.PhaseType;
 import br.com.sabiox.sabiox_tool.domain.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -35,7 +34,8 @@ public class Project {
     private List<ProjectUser> participants = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Phase> phases = new ArrayList<>();
+    @MapKey(name = "phaseType")
+    private Map<PhaseType, Phase> phases = new HashMap<>(5);
     
     @CreationTimestamp
     @Column(name = "creation_date", nullable = false, updatable = false)

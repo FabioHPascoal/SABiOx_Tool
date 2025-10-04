@@ -2,9 +2,12 @@ package br.com.sabiox.sabiox_tool.domain.sabiox.lifecycle;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import br.com.sabiox.sabiox_tool.domain.sabiox.activity.Activity;
+import br.com.sabiox.sabiox_tool.domain.sabiox.activity.ActivityType;
 import br.com.sabiox.sabiox_tool.domain.sabiox.phase.Phase;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -35,5 +38,6 @@ public class LifeCycle {
     private Phase phase;
 
     @OneToMany(mappedBy = "lifeCycle", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Activity> activities = new ArrayList<>();
+    @MapKey(name = "activityType")
+    private Map<ActivityType, Activity> activities = new HashMap<>();
 }

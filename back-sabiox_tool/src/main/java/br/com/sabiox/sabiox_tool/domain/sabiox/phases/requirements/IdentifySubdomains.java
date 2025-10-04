@@ -1,6 +1,8 @@
 package br.com.sabiox.sabiox_tool.domain.sabiox.phases.requirements;
 
 import br.com.sabiox.sabiox_tool.domain.sabiox.activity.Activity;
+import br.com.sabiox.sabiox_tool.domain.sabiox.activity.ActivityType;
+import br.com.sabiox.sabiox_tool.domain.sabiox.lifecycle.LifeCycle;
 import br.com.sabiox.sabiox_tool.domain.sabiox.phases.requirements.domain.Domain;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -20,4 +22,9 @@ import java.util.List;
 public class IdentifySubdomains extends Activity {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Domain> subDomains = new ArrayList<>();
+
+    public IdentifySubdomains(ActivityType activityType,
+                         LifeCycle lifeCycle) {
+        super(activityType, lifeCycle);
+    }
 }

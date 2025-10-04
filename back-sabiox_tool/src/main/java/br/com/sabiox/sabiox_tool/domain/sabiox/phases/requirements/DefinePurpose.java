@@ -1,6 +1,8 @@
 package br.com.sabiox.sabiox_tool.domain.sabiox.phases.requirements;
 
 import br.com.sabiox.sabiox_tool.domain.sabiox.activity.Activity;
+import br.com.sabiox.sabiox_tool.domain.sabiox.activity.ActivityType;
+import br.com.sabiox.sabiox_tool.domain.sabiox.lifecycle.LifeCycle;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,4 +24,9 @@ public class DefinePurpose extends Activity {
 
     @Column(name = "why_question")
     private String whyQuestion;
+
+    public DefinePurpose(ActivityType activityType,
+                         LifeCycle lifeCycle) {
+        super(activityType, lifeCycle);
+    }
 }

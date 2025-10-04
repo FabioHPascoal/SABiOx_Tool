@@ -1,6 +1,8 @@
 package br.com.sabiox.sabiox_tool.domain.sabiox.phases.requirements;
 
 import br.com.sabiox.sabiox_tool.domain.sabiox.activity.Activity;
+import br.com.sabiox.sabiox_tool.domain.sabiox.activity.ActivityType;
+import br.com.sabiox.sabiox_tool.domain.sabiox.lifecycle.LifeCycle;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,5 +18,10 @@ import lombok.Setter;
 public class ElicitRequirements extends Activity {
     @Column(name = "what_question")
     private String whatQuestion;
+
+    public ElicitRequirements(ActivityType activityType,
+                         LifeCycle lifeCycle) {
+        super(activityType, lifeCycle);
+    }
 }
 

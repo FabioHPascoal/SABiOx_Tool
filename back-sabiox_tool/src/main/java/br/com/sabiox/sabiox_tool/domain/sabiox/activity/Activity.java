@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Table(name = "activity")
@@ -22,10 +21,6 @@ public abstract class Activity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @CreationTimestamp
-    @Column(name = "start_date", nullable = false, updatable = false)
-    private LocalDate startDate;
-
     @Column(name = "end_date")
     private LocalDate endDate;
 
@@ -33,7 +28,17 @@ public abstract class Activity {
     @Column(name = "activity_stage")
     private ActivityStage activityStage;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "activity_type")
+    private ActivityType activityType;
+
     @ManyToOne
     @JoinColumn(name = "life_cycle_id")
     private LifeCycle lifeCycle;
+
+    public Activity(ActivityType activityType, LifeCycle lifeCycle) {
+        this.activityStage = ActivityStage.NOT_STARTED;
+        this.activityType = activityType;
+        this.lifeCycle = lifeCycle;
+    }
 }

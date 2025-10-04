@@ -1,6 +1,8 @@
 package br.com.sabiox.sabiox_tool.domain.sabiox.phases.requirements;
 
 import br.com.sabiox.sabiox_tool.domain.sabiox.activity.Activity;
+import br.com.sabiox.sabiox_tool.domain.sabiox.activity.ActivityType;
+import br.com.sabiox.sabiox_tool.domain.sabiox.lifecycle.LifeCycle;
 import br.com.sabiox.sabiox_tool.domain.sabiox.phases.requirements.domain.Domain;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -18,4 +20,9 @@ public class IdentifyDomain extends Activity {
     @OneToOne
     @JoinColumn(name = "domain_id")
     Domain domain;
+
+    public IdentifyDomain(ActivityType activityType,
+                         LifeCycle lifeCycle) {
+        super(activityType, lifeCycle);
+    }
 }

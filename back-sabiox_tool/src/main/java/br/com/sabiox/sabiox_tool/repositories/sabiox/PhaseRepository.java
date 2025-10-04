@@ -1,4 +1,4 @@
-package br.com.sabiox.sabiox_tool.repositories.phases;
+package br.com.sabiox.sabiox_tool.repositories.sabiox;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

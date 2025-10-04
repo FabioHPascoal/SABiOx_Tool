@@ -19,8 +19,10 @@ public class Phase {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "project_id")
     private Project project;
 
+    @Enumerated(EnumType.STRING)
     private PhaseType phaseType;
 
     public Phase(Project project, PhaseType phaseType) {

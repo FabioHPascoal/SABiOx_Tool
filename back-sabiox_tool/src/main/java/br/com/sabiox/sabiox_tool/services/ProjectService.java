@@ -14,7 +14,6 @@ import br.com.sabiox.sabiox_tool.repositories.ProjectUserRepository;
 import br.com.sabiox.sabiox_tool.repositories.UserRepository;
 
 import java.util.List;
-import java.util.Objects;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +25,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class ProjectService {
+    @Autowired
+    ProjectAuthorizationService projectAuthorizationService;
+
     @Autowired
     private UserRepository userRepository;
 
@@ -54,11 +56,11 @@ public class ProjectService {
 
         project.getParticipants().add(projectOwner);
 
-        project.getPhases().add(new Phase(project, PhaseType.REQUIREMENTS));
-        project.getPhases().add(new Phase(project, PhaseType.SETUP));
-        project.getPhases().add(new Phase(project, PhaseType.CAPTURE));
-        project.getPhases().add(new Phase(project, PhaseType.DESIGN));
-        project.getPhases().add(new Phase(project, PhaseType.IMPLEMENTATION));
+        project.getPhases().put(PhaseType.REQUIREMENTS, new Phase(project, PhaseType.REQUIREMENTS));
+        project.getPhases().put(PhaseType.SETUP, new Phase(project, PhaseType.SETUP));
+        project.getPhases().put(PhaseType.CAPTURE, new Phase(project, PhaseType.CAPTURE));
+        project.getPhases().put(PhaseType.DESIGN, new Phase(project, PhaseType.DESIGN));
+        project.getPhases().put(PhaseType.IMPLEMENTATION, new Phase(project, PhaseType.IMPLEMENTATION));
 
         project = projectRepository.save(project);
 
@@ -96,12 +98,7 @@ public class ProjectService {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found."));
 
-        boolean isOwner = projectUserRepository.existsByProjectIdAndUserIdAndParticipationType(
-                projectId, userId, ParticipationType.OWNER);
-
-        if (!isOwner) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "You're not the owner of this project.");
-        }
+        projectAuthorizationService.assertOwner(projectId, userId);
 
         BeanUtils.copyProperties(projectRequestDTO, project);
         return projectRepository.save(project);
@@ -113,31 +110,21 @@ public class ProjectService {
         Project project = projectRepository.findById(projectId)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found."));
 
-        boolean isOwner = projectUserRepository.existsByProjectIdAndUserIdAndParticipationType(
-                projectId, userId, ParticipationType.OWNER);
-
-        if (!isOwner) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "You're not the owner of this project.");
-        }
+        projectAuthorizationService.assertOwner(projectId, userId);
 
         project.setIsEnabled(false);
         projectRepository.save(project);
     }
 
     @Transactional
-    public void addMember(Long ownerId, Long projectId, String email) {
+    public void addMember(Long userId, Long projectId, String email) {
         User addedUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Member user not found."));
 
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found."));
 
-        boolean isOwner = projectUserRepository.existsByProjectIdAndUserIdAndParticipationType(
-                projectId, ownerId, ParticipationType.OWNER);
-
-        if (!isOwner) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "You're not the owner of this project.");
-        }
+        projectAuthorizationService.assertOwner(projectId, userId);
 
         ProjectUser newMember = new ProjectUser();
         newMember.setUser(addedUser);
