@@ -9,7 +9,7 @@
         <project-header v-if="isProject"/>
         <div class="col">
           <div class="row fit">
-            <div v-if="isProject" class="bg-background" style="width: 20px;"/>
+            <div v-if="isProject" class="bg-background" style="width: 20px;"></div>
             <div class="col">
               <router-view />
             </div>
@@ -56,4 +56,3 @@ const linksMain = computed(() => [
   }
 ])
 </script>
-

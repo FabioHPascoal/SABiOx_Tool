@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { api } from 'src/boot/axios'
 
 export const useProjectStore = defineStore('project', () => {
@@ -20,11 +20,28 @@ export const useProjectStore = defineStore('project', () => {
   const clearProject = () => {
     project.value = null
   }
+  const updateActivityStage = (activityKey, newStage) => {
+    const activities = project.value?.activitiesDTO?.activities
+    if (activities && activities[activityKey]) {
+      activities[activityKey].stage = newStage
+    }
+  }
+
+  const activitiesList = computed(() => {
+    const acts = project.value?.activitiesDTO?.activities || {}
+    return Object.entries(acts).map(([key, val]) => ({
+      key,
+      id: val.id,
+      stage: val.stage
+    }))
+  })
 
   return {
     project,
     loading,
     fetchProject,
-    clearProject
+    clearProject,
+    updateActivityStage,
+    activitiesList
   }
 })

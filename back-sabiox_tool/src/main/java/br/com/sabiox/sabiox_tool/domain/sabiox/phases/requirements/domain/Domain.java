@@ -10,8 +10,8 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 
-@Table(name = "domain")
 @Entity
+@Table(name = "domain")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,4 +22,12 @@ public class Domain {
     private Long id;
 
     private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "identify_subdomains_id")
+    private IdentifySubdomains identifySubdomains;
+
+    @OneToOne
+    @JoinColumn(name = "identify_domain_id")
+    private IdentifyDomain identifyDomain;
 }

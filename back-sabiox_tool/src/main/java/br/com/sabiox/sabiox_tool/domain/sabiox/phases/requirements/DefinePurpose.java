@@ -25,8 +25,7 @@ public class DefinePurpose extends Activity {
     @Column(name = "why_question")
     private String whyQuestion;
 
-    public DefinePurpose(ActivityType activityType,
-                         LifeCycle lifeCycle) {
+    public DefinePurpose(ActivityType activityType, LifeCycle lifeCycle) {
         super(activityType, lifeCycle);
     }
 }

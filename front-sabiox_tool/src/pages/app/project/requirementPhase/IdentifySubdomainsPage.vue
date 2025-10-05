@@ -1,5 +1,5 @@
 <template>
-  <page-title title="Identify Subdomain" />
+  <page-title title="Identify Subdomains" />
   <div class="q-pa-md">
     <div v-if="projectStore.loading">Carregando...</div>
     <div v-else-if="projectStore.project">

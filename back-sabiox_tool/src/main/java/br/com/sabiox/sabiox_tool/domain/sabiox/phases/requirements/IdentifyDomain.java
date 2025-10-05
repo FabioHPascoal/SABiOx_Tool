@@ -10,19 +10,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Table(name = "identify_domain")
 @Entity
+@Table(name = "identify_domain")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class IdentifyDomain extends Activity {
-    @OneToOne
     @JoinColumn(name = "domain_id")
-    Domain domain;
+    @OneToOne(mappedBy = "identifyDomain", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Domain domain;
 
-    public IdentifyDomain(ActivityType activityType,
-                         LifeCycle lifeCycle) {
+    public IdentifyDomain(ActivityType activityType, LifeCycle lifeCycle) {
         super(activityType, lifeCycle);
     }
 }

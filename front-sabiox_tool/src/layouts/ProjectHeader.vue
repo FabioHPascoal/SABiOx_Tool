@@ -14,6 +14,6 @@ export default defineComponent({
 <script setup>
   import ProjectKanban from './ProjectKanban.vue'
   import ProjectToolbar from './ProjectToolbar.vue'
-
+  
   const projectKanbanVal = ref(true)
 </script>

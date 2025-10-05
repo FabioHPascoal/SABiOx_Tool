@@ -13,18 +13,18 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
-@Table(name = "identify_subdomains")
 @Entity
+@Table(name = "identify_subdomains")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class IdentifySubdomains extends Activity {
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Domain> subDomains = new ArrayList<>();
+    @OneToMany(mappedBy = "identifySubdomains", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Domain> subdomains = new ArrayList<>();
 
-    public IdentifySubdomains(ActivityType activityType,
-                         LifeCycle lifeCycle) {
+    public IdentifySubdomains(ActivityType activityType, LifeCycle lifeCycle) {
         super(activityType, lifeCycle);
     }
 }
+

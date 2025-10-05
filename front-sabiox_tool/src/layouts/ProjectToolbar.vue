@@ -1,9 +1,3 @@
-<!-- <template>
-    <div class="bg-background" style="height: 50px; border-bottom: 3px solid var(--q-border)">
-      
-    </div>
-</template> -->
-
 <template>
   <div
     class="q-py-xs row no-wrap justify-center"
@@ -51,14 +45,13 @@ const actions = reactive([
     label: 'Toggle Kanban View',
     icon: 'visibility',
     toggleble: true,
-    model: props.projectKanban, // estado inicial sincronizado
+    model: props.projectKanban,
     onClick: (action) => {
       emit('update:projectKanban', !action.model)
     }
   }
 ])
 
-// Mantém sincronizado de fora pra dentro
 watch(
   () => props.projectKanban,
   (val) => {
@@ -66,12 +59,10 @@ watch(
   }
 )
 
-// Cor do botão
 const getButtonColor = (action) => {
   return action.model ? 'btnPressed' : 'bg-Background'
 }
 
-// Cor do ícone
 const getIconColor = (action) => {
   return action.model ? 'onBackground' : 'accent'
 }

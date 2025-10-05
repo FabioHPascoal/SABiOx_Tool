@@ -10,24 +10,42 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
-@RequestMapping("/api/project/{projectId}")
+@RequestMapping("/api/project")
 public class LifeCycleController {
     @Autowired
     LifeCycleService lifeCycleService;
 
-    @PostMapping("/lifeCycle")
+    @PostMapping("/{projectId}/lifeCycle")
     public ResponseEntity<LifeCycleResponseDTO> createLifeCycle(
             @PathVariable Long projectId,
             @Valid @RequestBody LifeCycleRequestDTO lifeCycleRequestDTO,
             @AuthenticationPrincipal User authUser) {
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(lifeCycleService
-                .create(projectId, authUser.getId(), lifeCycleRequestDTO));
+        LifeCycleResponseDTO response = lifeCycleService.create(projectId, authUser.getId(), lifeCycleRequestDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @GetMapping("/{projectId}/lifeCycle")
+    public ResponseEntity<List<LifeCycleResponseDTO>> getLifeCyclesByPhaseType(
+            @PathVariable Long projectId,
+            @Valid @RequestBody LifeCycleRequestDTO lifeCycleRequestDTO,
+            @AuthenticationPrincipal User authUser) {
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(lifeCycleService.getAllByPhaseType(authUser.getId(), projectId, lifeCycleRequestDTO));
+    }
+
+    @GetMapping("/lifeCycle/{lifeCycleId}")
+    public ResponseEntity<Void> deleteLifeCycle(
+            @PathVariable Long lifeCycleId,
+            @AuthenticationPrincipal User authUser) {
+
+        lifeCycleService.delete(authUser.getId(), lifeCycleId);
+        return ResponseEntity.noContent().build();
     }
 }

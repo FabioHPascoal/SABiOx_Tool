@@ -29,12 +29,12 @@
 
       <q-separator style="height: 3px; background-color: var(--q-border)" />
 
-      <drawer-link
-        v-for="link in linksProject"
-        :key="link.name"
-        color='onBackground'
-        v-bind="link"
-      />
+      <project-drawer-links
+        v-for="section in linksProject"
+        :key="section.title"
+        v-bind="section">
+      </project-drawer-links>
+
     </q-drawer>
 
     <q-btn
@@ -62,19 +62,19 @@
 
 <script>
 import { computed, defineComponent, ref } from 'vue'
-import { useQuasar } from 'quasar'
 
 import drawerOpen from 'src/assets/drawer-open-light.svg'
 import drawerClose from 'src/assets/drawer-close-light.svg'
 
 export default defineComponent({
+  components: { ProjectDrawerLinks },
   name: 'ProjectDrawer'
 })
 </script>
 
 <script setup>
 import { useProjectStore } from 'src/stores/project'
-import DrawerLink from 'src/components/DrawerLink.vue'
+import ProjectDrawerLinks from './ProjectDrawerLinks.vue'
 
 const projectStore = useProjectStore()
 
@@ -84,32 +84,47 @@ const toggleProjectDrawer = () => {
   projectDrawerVal.value = !projectDrawerVal.value
 }
 
-const linksProject = computed(() => [
-  {
-    name: 'define purpose',
-    label: 'Define Purpose',
-    to: { name: 'App.Project.RequirementPhase.DefinePurpose' },
-    exact: true
-  },
-  {
-    name: 'identify and size domain',
-    label: 'Identify and Size Domain',
-    to: { name: 'App.Project.RequirementPhase.IdentifyDomain' },
-    exact: true
-  },
-  {
-    name: 'elicit requirements',
-    label: 'Elicit Requirements',
-    to: { name: 'App.Project.RequirementPhase.ElicitRequirements' },
-    exact: true
-  },
-  {
-    name: 'identify subdomains',
-    label: 'Identify Subdomains',
-    to: { name: 'App.Project.RequirementPhase.IdentifySubdomains' },
-    exact: true
-  }
-])
+const linksProject = computed(() => {
+  const acts = projectStore.project?.activitiesDTO?.activities || {}
+
+  return [
+    {
+      title: 'Requirements',
+      color: 'onBackground',
+      links: [
+        {
+          name: 'define purpose',
+          label: 'Define Purpose',
+          to: { name: 'App.Project.RequirementPhase.DefinePurpose' },
+          exact: true,
+          stage: acts.REQ_PURP?.stage || 'NOT_STARTED'
+        },
+        {
+          name: 'identify and size domain',
+          label: 'Identify and Size Domain',
+          to: { name: 'App.Project.RequirementPhase.IdentifyDomain' },
+          exact: true,
+          stage: acts.REQ_DOMN?.stage || 'NOT_STARTED'
+        },
+        {
+          name: 'elicit requirements',
+          label: 'Elicit Requirements',
+          to: { name: 'App.Project.RequirementPhase.ElicitRequirements' },
+          exact: true,
+          stage: acts.REQ_ELIC?.stage || 'NOT_STARTED'
+        },
+        {
+          name: 'identify subdomains',
+          label: 'Identify Subdomains',
+          to: { name: 'App.Project.RequirementPhase.IdentifySubdomains' },
+          exact: true,
+          stage: acts.REQ_SUBD?.stage || 'NOT_STARTED'
+        }
+      ]
+    }
+  ]
+})
+
 
 </script>
 

@@ -4,6 +4,7 @@
     :to="to"
     :exact="exact"
     active-class="active-item"
+    class="q-py-none"
   >
     <q-item-section v-if="icon" side>
       <q-icon :name="icon" :color="color" />

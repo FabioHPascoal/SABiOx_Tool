@@ -21,6 +21,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class LifeCycleService {
     @Autowired
@@ -48,6 +51,7 @@ public class LifeCycleService {
 
         LifeCycle lifeCycle = new LifeCycle();
         lifeCycle.setPhase(project.getPhases().get(lifeCycleRequestDTO.phaseType()));
+        project.getPhases().get(lifeCycleRequestDTO.phaseType()).getLifeCycles().add(lifeCycle);
 
         if (lifeCycleRequestDTO.phaseType() == PhaseType.REQUIREMENTS) {
             lifeCycle.getActivities().put(REQ_PURP, new DefinePurpose(REQ_PURP, lifeCycle));
@@ -59,5 +63,41 @@ public class LifeCycleService {
         lifeCycle = lifeCycleRepository.save(lifeCycle);
 
         return new LifeCycleResponseDTO(lifeCycle);
+    }
+
+    @Transactional(readOnly = true)
+    public List<LifeCycleResponseDTO> getAllByPhaseType(
+            Long userId,
+            Long projectId,
+            LifeCycleRequestDTO lifeCycleRequestDTO)
+
+    {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found."));
+        if (!user.isEnabled()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is not enabled.");
+
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found."));
+
+        projectAuthorizationService.assertMember(projectId, userId);
+
+        List<LifeCycle> lifeCycles = project.getPhases().get(lifeCycleRequestDTO.phaseType()).getLifeCycles();
+        return lifeCycles.stream().map(LifeCycleResponseDTO::new).toList();
+    }
+
+    @Transactional
+    public void delete(Long userId, Long lifeCycleId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found."));
+        if (!user.isEnabled()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is not enabled.");
+
+        LifeCycle lifeCycle = lifeCycleRepository.findById(lifeCycleId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "LifeCycle not found."
+                ));
+
+        projectAuthorizationService.assertMember(lifeCycle.getPhase().getProject().getId(), userId);
+
+        lifeCycleRepository.delete(lifeCycle);
     }
 }

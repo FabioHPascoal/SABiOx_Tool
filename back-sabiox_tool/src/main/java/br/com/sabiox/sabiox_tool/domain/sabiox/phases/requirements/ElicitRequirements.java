@@ -19,8 +19,7 @@ public class ElicitRequirements extends Activity {
     @Column(name = "what_question")
     private String whatQuestion;
 
-    public ElicitRequirements(ActivityType activityType,
-                         LifeCycle lifeCycle) {
+    public ElicitRequirements(ActivityType activityType, LifeCycle lifeCycle) {
         super(activityType, lifeCycle);
     }
 }
