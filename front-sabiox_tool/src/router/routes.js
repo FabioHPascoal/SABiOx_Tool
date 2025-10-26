@@ -28,7 +28,12 @@ const routes = [
         component: () => import('src/pages/app/ProjectManagerPage.vue')
       },
       {
-        path: 'project/:id',
+        path: 'project/:id/lifeCycleManager',
+        name: 'App.Project.LifeCycleManager',
+        component: () => import('src/pages/app/project/LifeCycleManagerPage.vue')
+      },
+      {
+        path: 'project/:id/definePurpose',
         name: 'App.Project.RequirementPhase.DefinePurpose',
         component: () => import('src/pages/app/project/requirementPhase/DefinePurposePage.vue')
       },

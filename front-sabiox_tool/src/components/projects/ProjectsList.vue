@@ -1,17 +1,3 @@
-<!-- <template>
-  <q-table
-    @request="projectsComposable.onRequest"
-    :rows="projectsComposable.rows"
-    :loading="projectsComposable.isLoading"
-    grid
-    class="the-table"
-  >
-    <template #item="{ row }">
-      <project-card-small :project="row" class="fit" />
-    </template>
-  </q-table>
-</template> -->
-
 <template>
   <transition-group
     name="fade-move"

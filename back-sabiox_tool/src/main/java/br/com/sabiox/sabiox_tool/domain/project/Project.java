@@ -33,7 +33,7 @@ public class Project {
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProjectUser> participants = new ArrayList<>();
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "project", orphanRemoval = true)
     @MapKey(name = "phaseType")
     private Map<PhaseType, Phase> phases = new HashMap<>(5);
     

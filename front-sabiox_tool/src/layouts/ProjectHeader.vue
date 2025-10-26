@@ -1,10 +1,15 @@
 <template>
-    <project-toolbar v-model:projectKanban="projectKanbanVal"/>
-    <project-kanban v-model:modelValue="projectKanbanVal"/>
+    <project-toolbar v-model:kanbanBar="kanbanBarVal"/>
+    <kanban-bar
+      v-if="projectStore.phases.length"
+      :model-value="kanbanBarVal"
+      phase-type="REQUIREMENTS"
+    />
 </template>
 
 <script>
 import { defineComponent, ref } from 'vue'
+import { useProjectStore } from 'src/stores/project'
 
 export default defineComponent({
   name: 'ProjectHeader'
@@ -12,8 +17,9 @@ export default defineComponent({
 </script>
 
 <script setup>
-  import ProjectKanban from './ProjectKanban.vue'
+  import KanbanBar from './KanbanBar.vue'
   import ProjectToolbar from './ProjectToolbar.vue'
-  
-  const projectKanbanVal = ref(true)
+
+  const projectStore = useProjectStore()
+  const kanbanBarVal = ref(true)
 </script>

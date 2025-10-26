@@ -15,6 +15,7 @@ import br.com.sabiox.sabiox_tool.repositories.UserRepository;
 
 import java.util.List;
 
+import br.com.sabiox.sabiox_tool.repositories.sabiox.PhaseRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -35,13 +36,14 @@ public class ProjectService {
     private ProjectRepository projectRepository;
 
     @Autowired
-    private ProjectUserRepository projectUserRepository;
+    private PhaseRepository phaseRepository;
 
     @Transactional
     public ProjectResponseDTO create(ProjectRequestDTO projectRequestDTO, String userEmail) {
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found."));
-        if (!user.isEnabled()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is not enabled.");
+        if (!user.isEnabled())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is not enabled.");
 
         Project project = new Project();
         project.setTitle(projectRequestDTO.title());
@@ -56,13 +58,21 @@ public class ProjectService {
 
         project.getParticipants().add(projectOwner);
 
-        project.getPhases().put(PhaseType.REQUIREMENTS, new Phase(project, PhaseType.REQUIREMENTS));
-        project.getPhases().put(PhaseType.SETUP, new Phase(project, PhaseType.SETUP));
-        project.getPhases().put(PhaseType.CAPTURE, new Phase(project, PhaseType.CAPTURE));
-        project.getPhases().put(PhaseType.DESIGN, new Phase(project, PhaseType.DESIGN));
-        project.getPhases().put(PhaseType.IMPLEMENTATION, new Phase(project, PhaseType.IMPLEMENTATION));
-
         project = projectRepository.save(project);
+
+        List<PhaseType> orderedPhases = List.of(
+                PhaseType.REQUIREMENTS,
+                PhaseType.SETUP,
+                PhaseType.CAPTURE,
+                PhaseType.DESIGN,
+                PhaseType.IMPLEMENTATION
+        );
+
+        for (PhaseType type : orderedPhases) {
+            Phase phase = new Phase(project, type);
+            phaseRepository.save(phase);
+            project.getPhases().put(type, phase);
+        }
 
         return new ProjectResponseDTO(project);
     }

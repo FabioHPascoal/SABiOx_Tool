@@ -1,4 +1,4 @@
-package br.com.sabiox.sabiox_tool.domain.sabiox.phases.requirements;
+package br.com.sabiox.sabiox_tool.domain.sabiox.phases.requirements.identifyDomain;
 
 import br.com.sabiox.sabiox_tool.domain.sabiox.activity.Activity;
 import br.com.sabiox.sabiox_tool.domain.sabiox.activity.ActivityType;
@@ -23,5 +23,7 @@ public class IdentifyDomain extends Activity {
 
     public IdentifyDomain(ActivityType activityType, LifeCycle lifeCycle) {
         super(activityType, lifeCycle);
+        this.domain = new Domain();
+        domain.setIdentifyDomain(this);
     }
 }

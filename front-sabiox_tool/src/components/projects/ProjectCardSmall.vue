@@ -2,14 +2,14 @@
   <q-card
     v-ripple
     @click="onClick(project)"
-    bordered
-    class="q-mb-md cursor-pointer q-hoverable"
+    class="q-mb-md cursor-pointer q-hoverable custom-card"
+    flat
   >
     <span class="q-focus-helper"></span>
     <q-list dense class="q-gutter-y-xs q-py-sm">
       <q-item class="justify-between">
         <q-item-section>
-          <q-item-label lines="1" class="text-subtitle2 primary">
+          <q-item-label lines="1" class="text-subtitle2 onBackground">
             {{ project.title }}
           </q-item-label>
         </q-item-section>
@@ -106,9 +106,17 @@ const $router = useRouter()
 
 const onClick = () => {
   $router.push({
-    name: 'App.Project.RequirementPhase.DefinePurpose',
+    name: 'App.Project.LifeCycleManager',
     params: { id: props.project?.projectId }
   })
 }
 
 </script>
+
+<style scoped>
+.custom-card {
+  border: 2px solid var(--q-border);
+  border-radius: 8px;
+  background-color: var(--q-surface);
+}
+</style>

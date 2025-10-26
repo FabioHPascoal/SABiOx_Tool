@@ -8,8 +8,10 @@
         icon="add_circle_outline"
         padding="sm md"
         no-caps
+        class="custom-card"
       />
       <q-btn-toggle
+        class="custom-card"
         v-model="filterMode"
         no-caps
         toggle-color="primary"
@@ -121,3 +123,11 @@ onMounted(async () => {
 })
 
 </script>
+
+<!-- <style scoped>
+.custom-card {
+  border: 2px solid var(--q-border);
+  border-radius: 8px;
+  background-color: var(--q-surface);
+}
+</style> -->

@@ -1,5 +1,5 @@
 export const DEFAULT_PROJECT = {
-    ownerID: '',
+    ownerId: '',
     title: '',
     description: '',
     creationDate: '',

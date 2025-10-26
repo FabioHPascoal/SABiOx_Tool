@@ -11,29 +11,31 @@
       :to="link.to"
       clickable
       active-class="bg-btnPressed text-onBackground"
+      class="custom-item q-py-sm"
     >
     <q-item-section>
       <q-item-label :class="color ? `text-${color}` : ''">
         {{ link.label }}
       </q-item-label>
     </q-item-section>
-      <!-- <q-item-section avatar>
-        <q-icon :name="link.icon" :color="color ? `text-${color}` : ''" />
-      </q-item-section> -->
+    <q-item-section side>
+      <status-icon
+        :status="statusMap[link.stage] || 'empty'"
+        width="18"
+        height="18"
+      />
+    </q-item-section>
     </q-item>
   </q-list>
 </template>
 
 <script>
-import { computed, defineComponent, ref } from 'vue'
-import { useQuasar } from 'quasar'
+import { computed, defineComponent, ref, onMounted } from 'vue'
 
-import emptyIcon from 'src/assets/state-empty.svg'
-import inProgressIcon from 'src/assets/state-in-progress.svg'
-import documentationIcon from 'src/assets/state-documentation.svg'
-import okIcon from 'src/assets/state-ok.svg'
+import StatusIcon from '../components/projects/StatusIcon.vue'
 
 export default defineComponent({
+  components: { StatusIcon },
   name: 'ProjectDrawerLinks'
 })
 </script>
@@ -55,4 +57,18 @@ const props = defineProps({
   }
 })
 
+const statusMap = {
+  'NOT_STARTED': 'empty',
+  'IN_PROGRESS': 'in-progress',
+  'DOCUMENTATION': 'documentation',
+  'CONTROL': 'documentation',
+  'EVALUATE': 'documentation',
+  'COMPLETED': 'ok'
+}
 </script>
+
+<style scoped>
+  .custom-item {
+    min-height: unset;
+  }
+</style>

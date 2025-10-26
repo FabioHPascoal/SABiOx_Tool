@@ -3,7 +3,7 @@ package br.com.sabiox.sabiox_tool.domain.project;
 import java.time.LocalDate;
 
 public record ProjectResponseReducedDTO(Long projectId,
-                                        Long ownerID,
+                                        Long ownerId,
                                         String title,
                                         String description,
                                         LocalDate creationDate,

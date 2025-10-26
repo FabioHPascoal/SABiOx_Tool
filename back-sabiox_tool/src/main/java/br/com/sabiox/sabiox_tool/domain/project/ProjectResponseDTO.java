@@ -1,12 +1,11 @@
 package br.com.sabiox.sabiox_tool.domain.project;
 
-import br.com.sabiox.sabiox_tool.domain.ProjectUser.ParticipationType;
-import br.com.sabiox.sabiox_tool.domain.sabiox.phase.PhaseDTO;
+import br.com.sabiox.sabiox_tool.domain.sabiox.phase.Phase;
+import br.com.sabiox.sabiox_tool.domain.sabiox.phase.PhaseReducedDTO;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 public record ProjectResponseDTO(Long projectId,
                                  Long ownerId,
@@ -14,7 +13,7 @@ public record ProjectResponseDTO(Long projectId,
                                  String description,
                                  LocalDate creationDate,
                                  Boolean isEnabled,
-                                 List<PhaseDTO> phases
+                                 List<PhaseReducedDTO> phases
 ) {
     public ProjectResponseDTO(Project project) {
         this(
@@ -24,7 +23,11 @@ public record ProjectResponseDTO(Long projectId,
                 project.getDescription(),
                 project.getCreationDate(),
                 project.getIsEnabled(),
-                project.getPhases().values().stream().map(PhaseDTO::new).toList()
+                project.getPhases()
+                        .values().stream()
+                        .sorted(Comparator.comparing(Phase::getId))
+                        .map(PhaseReducedDTO::new)
+                        .toList()
         );
     }
 }

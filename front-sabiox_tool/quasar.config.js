@@ -228,5 +228,3 @@ export default defineConfig((/* ctx */) => {
     }
   }
 })
-
-console.log('TESTE')

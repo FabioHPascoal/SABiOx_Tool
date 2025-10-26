@@ -37,7 +37,7 @@ public class LifeCycle {
     @ManyToOne
     private Phase phase;
 
-    @OneToMany(mappedBy = "lifeCycle", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "lifeCycle", orphanRemoval = true)
     @MapKey(name = "activityType")
     private Map<ActivityType, Activity> activities = new HashMap<>();
 }
