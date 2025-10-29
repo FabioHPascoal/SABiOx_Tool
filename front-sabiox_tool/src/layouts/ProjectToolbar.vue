@@ -75,15 +75,6 @@ const getIconColor = (action) => {
       style="min-width: 180px;"
     />
 
-    <!-- <q-select
-      v-model="projectStore.selectedCycleIndex"
-      :options="lifeCycleOptions"
-      label="Life Cycle"
-      dense
-      outlined
-      style="min-width: 160px;"
-    /> -->
-
     <q-select
       v-model="projectStore.selectedLifeCycleIndex"
       :options="lifeCycleOptions"

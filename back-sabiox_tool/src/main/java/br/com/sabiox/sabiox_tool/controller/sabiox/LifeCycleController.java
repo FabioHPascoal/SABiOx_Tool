@@ -41,6 +41,15 @@ public class LifeCycleController {
     }
 
     @GetMapping("/lifeCycle/{lifeCycleId}")
+    public ResponseEntity<LifeCycleResponseDTO> getLifeCycle(
+            @PathVariable Long lifeCycleId,
+            @AuthenticationPrincipal User authUser) {
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(lifeCycleService.get(authUser.getId(), lifeCycleId));
+    }
+
+    @DeleteMapping("/lifeCycle/{lifeCycleId}")
     public ResponseEntity<Void> deleteLifeCycle(
             @PathVariable Long lifeCycleId,
             @AuthenticationPrincipal User authUser) {

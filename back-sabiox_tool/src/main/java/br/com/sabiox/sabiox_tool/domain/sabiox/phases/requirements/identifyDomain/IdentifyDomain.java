@@ -3,7 +3,7 @@ package br.com.sabiox.sabiox_tool.domain.sabiox.phases.requirements.identifyDoma
 import br.com.sabiox.sabiox_tool.domain.sabiox.activity.Activity;
 import br.com.sabiox.sabiox_tool.domain.sabiox.activity.ActivityType;
 import br.com.sabiox.sabiox_tool.domain.sabiox.lifecycle.LifeCycle;
-import br.com.sabiox.sabiox_tool.domain.sabiox.phases.requirements.domain.Domain;
+import br.com.sabiox.sabiox_tool.domain.sabiox.phases.requirements.identifyDomain.domain.Domain;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

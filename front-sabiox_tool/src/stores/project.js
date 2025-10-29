@@ -30,16 +30,16 @@ export const useProjectStore = defineStore('project', () => {
     }
   }
 
-  const fetchPhases = async (projectId) => {
-    if (!projectId) return
-    loading.value = true
-    try {
-      const { data } = await api.get(`project/${projectId}/phase`)
-      phases.value = data
-    } finally {
-      loading.value = false
+  const fetchPhases = async () => { 
+    if (!project?.value.projectId) return 
+    loading.value = true 
+    try { 
+      const { data } = await api.get(`project/${project.value.projectId}/phase`)
+      phases.value = data } 
+      finally { 
+        loading.value = false 
+      } 
     }
-  }
 
   const clearProject = () => {
     project.value = null
@@ -51,17 +51,8 @@ export const useProjectStore = defineStore('project', () => {
   const getSelectedLifeCycle = computed(() => {
     const phase = phases.value.find(p => p.phaseType === selectedPhaseType.value)
     if (!phase || !phase.lifeCycles?.length) return null
-    console.log('phase: ',phase)
-    console.log('life cycle idx: ', selectedLifeCycleIndex.value)
     return phase.lifeCycles[selectedLifeCycleIndex.value] || null
   })
-
-  const updateActivityStage = (activityKey, newStage) => {
-    const activities = project.value?.activitiesDTO?.activities
-    if (activities && activities[activityKey]) {
-      activities[activityKey].stage = newStage
-    }
-  }
 
   const activitiesList = computed(() => {
     const acts = project.value?.activitiesDTO?.activities || {}
@@ -81,7 +72,6 @@ export const useProjectStore = defineStore('project', () => {
     fetchProject,
     fetchPhases,
     clearProject,
-    updateActivityStage,
     activitiesList,
     getSelectedLifeCycle
   }

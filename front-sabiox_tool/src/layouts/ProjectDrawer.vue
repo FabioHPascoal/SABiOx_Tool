@@ -103,12 +103,12 @@ const toggleProjectDrawer = () => {
 
 const selectedLifeCycle = computed(() => projectStore.getSelectedLifeCycle)
 
-const latestActivities = computed(() => {
+const selectedActivities = computed(() => {
   return selectedLifeCycle.value?.activities || {}
 })
 
 const linksProject = computed(() => {
-  const acts = latestActivities.value
+  const acts = selectedActivities.value
 
   return [
     {

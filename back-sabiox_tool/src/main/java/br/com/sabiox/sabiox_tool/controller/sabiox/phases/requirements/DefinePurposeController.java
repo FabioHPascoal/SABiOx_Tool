@@ -35,5 +35,4 @@ public class DefinePurposeController {
 
         return ResponseEntity.ok(requirementsActivityService.getDefinePurpose(lifeCycleId, authUser.getId()));
     }
-
 }

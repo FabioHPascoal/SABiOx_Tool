@@ -1,7 +1,7 @@
-package br.com.sabiox.sabiox_tool.domain.sabiox.phases.requirements.domain;
+package br.com.sabiox.sabiox_tool.domain.sabiox.phases.requirements.identifyDomain.domain;
 
 import br.com.sabiox.sabiox_tool.domain.sabiox.phases.requirements.identifyDomain.IdentifyDomain;
-import br.com.sabiox.sabiox_tool.domain.sabiox.phases.requirements.IdentifySubdomains;
+import br.com.sabiox.sabiox_tool.domain.sabiox.phases.requirements.identifySubdomains.IdentifySubdomains;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,19 +23,10 @@ public class Domain {
     private Long id;
 
     private String description;
-
-    @ManyToOne
-    @JoinColumn(name = "identify_subdomains_id")
-    private IdentifySubdomains identifySubdomains;
+    private String horizontalDimension;
+    private String verticalDimension;
 
     @OneToOne
     @JoinColumn(name = "identify_domain_id")
     private IdentifyDomain identifyDomain;
-
-    @ManyToOne
-    @JoinColumn(name = "super_domain_id")
-    private Domain superdomain;
-
-    @OneToMany(mappedBy = "superdomain", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Domain> subdomains = new HashSet<>();
 }

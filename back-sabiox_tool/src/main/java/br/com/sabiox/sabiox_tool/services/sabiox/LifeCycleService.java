@@ -8,9 +8,9 @@ import br.com.sabiox.sabiox_tool.domain.sabiox.lifecycle.LifeCycleRequestDTO;
 import br.com.sabiox.sabiox_tool.domain.sabiox.lifecycle.LifeCycleResponseDTO;
 import br.com.sabiox.sabiox_tool.domain.sabiox.phase.PhaseType;
 import br.com.sabiox.sabiox_tool.domain.sabiox.phases.requirements.definePurpose.DefinePurpose;
-import br.com.sabiox.sabiox_tool.domain.sabiox.phases.requirements.ElicitRequirements;
+import br.com.sabiox.sabiox_tool.domain.sabiox.phases.requirements.elicitRequirements.ElicitRequirements;
 import br.com.sabiox.sabiox_tool.domain.sabiox.phases.requirements.identifyDomain.IdentifyDomain;
-import br.com.sabiox.sabiox_tool.domain.sabiox.phases.requirements.IdentifySubdomains;
+import br.com.sabiox.sabiox_tool.domain.sabiox.phases.requirements.identifySubdomains.IdentifySubdomains;
 import br.com.sabiox.sabiox_tool.domain.user.User;
 import br.com.sabiox.sabiox_tool.repositories.ProjectRepository;
 import br.com.sabiox.sabiox_tool.repositories.UserRepository;
@@ -79,11 +79,26 @@ public class LifeCycleService {
     }
 
     @Transactional(readOnly = true)
+    public LifeCycleResponseDTO get(Long userId, Long lifeCycleId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found."));
+        if (!user.isEnabled()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is not enabled.");
+
+        LifeCycle lifeCycle = lifeCycleRepository.findById(lifeCycleId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Life cycle not found."));
+
+        Project project = lifeCycle.getPhase().getProject();
+
+        projectAuthorizationService.assertMember(project.getId(), userId);
+
+        return new LifeCycleResponseDTO(lifeCycle);
+    }
+
+    @Transactional(readOnly = true)
     public List<LifeCycleResponseDTO> getAllByPhaseType(
             Long userId,
             Long projectId,
             LifeCycleRequestDTO lifeCycleRequestDTO)
-
     {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found."));

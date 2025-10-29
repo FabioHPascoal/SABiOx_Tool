@@ -40,13 +40,12 @@ const isProject = computed(() => route.name?.startsWith('App.Project'))
 const loadProjectData = async (id) => {
   if (!id) return
   await projectStore.fetchProject(id)
-  await projectStore.fetchPhases(id)
+  await projectStore.fetchPhases()
 }
 
 onMounted(async () => {
   if (isProject.value && route.params.id) {
     await loadProjectData(route.params.id)
-    // console.log('phases:', projectStore.phases)
   }
 })
 

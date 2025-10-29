@@ -1,4 +1,4 @@
-package br.com.sabiox.sabiox_tool.domain.sabiox.phases.requirements;
+package br.com.sabiox.sabiox_tool.domain.sabiox.phases.requirements.elicitRequirements;
 
 import br.com.sabiox.sabiox_tool.domain.sabiox.activity.Activity;
 import br.com.sabiox.sabiox_tool.domain.sabiox.activity.ActivityType;

@@ -78,7 +78,7 @@ const projectStore = useProjectStore()
 onMounted(async () => {
   const projectId = projectStore.project?.id
   if (projectId) {
-    await projectStore.fetchPhases(projectId)
+    await projectStore.fetchPhases()
   }
 })
 
@@ -132,11 +132,11 @@ const createLifeCycle = async (phaseId) => {
   try {
     $q.loading.show({ message: 'Creating new life cycle...' })
 
-    const response = await api.post(`/project/${projectId}/lifeCycle`, {
+    await api.post(`/project/${projectId}/lifeCycle`, {
       phaseType: phase.phaseType
     })
 
-    await projectStore.fetchPhases(projectId)
+    await projectStore.fetchPhases()
 
     $q.notify({
       type: 'positive',
