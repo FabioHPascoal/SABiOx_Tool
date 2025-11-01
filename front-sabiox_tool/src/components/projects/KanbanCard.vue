@@ -56,7 +56,6 @@ const props = defineProps({
   white-space: nowrap;
 }
 
-/* 🔹 Esta classe é aplicada *junta* com .card-row */
 .invisible {
   visibility: hidden;
 }

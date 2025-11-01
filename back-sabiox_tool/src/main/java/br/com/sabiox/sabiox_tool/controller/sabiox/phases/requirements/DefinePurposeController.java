@@ -3,7 +3,7 @@ package br.com.sabiox.sabiox_tool.controller.sabiox.phases.requirements;
 import br.com.sabiox.sabiox_tool.domain.sabiox.phases.requirements.definePurpose.DefinePurposeRequestDTO;
 import br.com.sabiox.sabiox_tool.domain.sabiox.phases.requirements.definePurpose.DefinePurposeResponseDTO;
 import br.com.sabiox.sabiox_tool.domain.user.User;
-import br.com.sabiox.sabiox_tool.services.sabiox.phases.RequirementsActivityService;
+import br.com.sabiox.sabiox_tool.services.sabiox.phases.requirements.RequirementsActivityService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

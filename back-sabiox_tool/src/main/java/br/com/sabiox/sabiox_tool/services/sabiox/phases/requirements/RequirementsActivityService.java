@@ -1,4 +1,4 @@
-package br.com.sabiox.sabiox_tool.services.sabiox.phases;
+package br.com.sabiox.sabiox_tool.services.sabiox.phases.requirements;
 
 import br.com.sabiox.sabiox_tool.domain.project.Project;
 import br.com.sabiox.sabiox_tool.domain.sabiox.activity.ActivityStage;
@@ -7,6 +7,8 @@ import br.com.sabiox.sabiox_tool.domain.sabiox.lifecycle.LifeCycle;
 import br.com.sabiox.sabiox_tool.domain.sabiox.phases.requirements.definePurpose.DefinePurpose;
 import br.com.sabiox.sabiox_tool.domain.sabiox.phases.requirements.definePurpose.DefinePurposeRequestDTO;
 import br.com.sabiox.sabiox_tool.domain.sabiox.phases.requirements.definePurpose.DefinePurposeResponseDTO;
+import br.com.sabiox.sabiox_tool.domain.sabiox.phases.requirements.elicitRequirements.ElicitRequirements;
+import br.com.sabiox.sabiox_tool.domain.sabiox.phases.requirements.elicitRequirements.ElicitRequirementsResponseDTO;
 import br.com.sabiox.sabiox_tool.domain.sabiox.phases.requirements.identifyDomain.IdentifyDomain;
 import br.com.sabiox.sabiox_tool.domain.sabiox.phases.requirements.identifyDomain.IdentifyDomainRequestDTO;
 import br.com.sabiox.sabiox_tool.domain.sabiox.phases.requirements.identifyDomain.IdentifyDomainResponseDTO;
@@ -144,4 +146,11 @@ public class RequirementsActivityService {
 //
 //        lifeCycleRepository.delete(lifeCycle);
 //    }
+
+    @Transactional
+    public ElicitRequirementsResponseDTO getElicitRequirements (Long lifeCycleId, Long userId) {
+        LifeCycle lifeCycle = checkUserProject(lifeCycleId, userId);
+        ElicitRequirements elicitRequirements = (ElicitRequirements) lifeCycle.getActivities().get(ActivityType.REQ_ELIC);
+        return new ElicitRequirementsResponseDTO(elicitRequirements);
+    }
 }
