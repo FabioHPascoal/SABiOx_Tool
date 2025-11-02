@@ -2,6 +2,7 @@ package br.com.sabiox.sabiox_tool.domain.sabiox.phases.requirements.elicitRequir
 
 import br.com.sabiox.sabiox_tool.domain.sabiox.phases.requirements.elicitRequirements.requirement.RequirementDTO;
 
+import java.util.Comparator;
 import java.util.List;
 
 public record ElicitRequirementsResponseDTO(
@@ -11,7 +12,12 @@ public record ElicitRequirementsResponseDTO(
     public ElicitRequirementsResponseDTO(ElicitRequirements elicitRequirements) {
         this(
                 elicitRequirements.getId(),
-                elicitRequirements.getRequirements().stream().map(RequirementDTO::new).toList()
+                elicitRequirements.getRequirements().stream()
+                        .sorted(Comparator.comparing(
+                                r -> r.getRequirementType().ordinal()
+                        ))
+                        .map(RequirementDTO::new)
+                        .toList()
         );
     }
 }
