@@ -14,7 +14,7 @@ public record RequirementResponseDTO(
         LocalDate creationDate,
         List<CommentDTO> comments
 ) {
-    public RequirementResponseDTO(Requirement requirement) {
+    public RequirementResponseDTO(Requirement requirement, Long authUserId) {
         this(
                 requirement.getId(),
                 requirement.getElicitRequirements().getId(),
@@ -22,7 +22,7 @@ public record RequirementResponseDTO(
                 requirement.getRequirementType(),
                 requirement.getDescription(),
                 requirement.getCreationDate(),
-                requirement.getComments().stream().map(CommentDTO::new).toList()
+                requirement.getComments().stream().map(c -> new CommentDTO(c, authUserId)).toList()
         );
     }
 }

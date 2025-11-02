@@ -1,6 +1,7 @@
 package br.com.sabiox.sabiox_tool.services.sabiox.phases.requirements.requirement;
 
 import br.com.sabiox.sabiox_tool.domain.project.Project;
+import br.com.sabiox.sabiox_tool.domain.sabiox.activity.ActivityStage;
 import br.com.sabiox.sabiox_tool.domain.sabiox.activity.ActivityType;
 import br.com.sabiox.sabiox_tool.domain.sabiox.lifecycle.LifeCycle;
 import br.com.sabiox.sabiox_tool.domain.sabiox.phases.requirements.elicitRequirements.ElicitRequirements;
@@ -52,12 +53,14 @@ public class RequirementService {
 
         ElicitRequirements elicitRequirements = checkUserProject(lifeCycleId, userId);
 
+        elicitRequirements.setActivityStage(ActivityStage.IN_PROGRESS);
+
         Requirement requirement = new Requirement();
         requirement.setElicitRequirements(elicitRequirements);
         requirement.setRequirementType(request.requirementType());
         requirement.setUser(userRepository.getReferenceById(userId));
         requirement.setDescription(request.description());
 
-        return new RequirementResponseDTO(requirementRepository.save(requirement));
+        return new RequirementResponseDTO(requirementRepository.save(requirement), userId);
     }
 }

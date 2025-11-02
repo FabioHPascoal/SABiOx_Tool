@@ -151,6 +151,6 @@ public class RequirementsActivityService {
     public ElicitRequirementsResponseDTO getElicitRequirements (Long lifeCycleId, Long userId) {
         LifeCycle lifeCycle = checkUserProject(lifeCycleId, userId);
         ElicitRequirements elicitRequirements = (ElicitRequirements) lifeCycle.getActivities().get(ActivityType.REQ_ELIC);
-        return new ElicitRequirementsResponseDTO(elicitRequirements);
+        return new ElicitRequirementsResponseDTO(elicitRequirements, userId);
     }
 }

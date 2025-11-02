@@ -38,6 +38,9 @@ public class ProjectService {
     @Autowired
     private PhaseRepository phaseRepository;
 
+    @Autowired
+    private ProjectUserRepository projectUserRepository;
+
     @Transactional
     public ProjectResponseDTO create(ProjectRequestDTO projectRequestDTO, String userEmail) {
         User user = userRepository.findByEmail(userEmail)
@@ -104,16 +107,17 @@ public class ProjectService {
     }
 
     @Transactional
-    public Project update(Long projectId, Long userId, ProjectRequestDTO projectRequestDTO) {
+    public ProjectResponseDTO update(Long projectId, Long userId, ProjectRequestDTO projectRequestDTO) {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found."));
 
         projectAuthorizationService.assertOwner(projectId, userId);
 
-        BeanUtils.copyProperties(projectRequestDTO, project);
-        return projectRepository.save(project);
-    }
+        project.setTitle(projectRequestDTO.title());
+        project.setDescription(projectRequestDTO.description());
 
+        return new ProjectResponseDTO(projectRepository.save(project));
+    }
 
     @Transactional
     public void disable(Long projectId, Long userId) {
@@ -128,12 +132,14 @@ public class ProjectService {
 
     @Transactional
     public void addMember(Long userId, Long projectId, String email) {
+
         User addedUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Member user not found."));
 
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found."));
 
+        projectAuthorizationService.assertNotMember(projectId, addedUser.getId());
         projectAuthorizationService.assertOwner(projectId, userId);
 
         ProjectUser newMember = new ProjectUser();

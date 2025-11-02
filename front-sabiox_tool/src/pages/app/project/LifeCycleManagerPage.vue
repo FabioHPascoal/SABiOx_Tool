@@ -117,7 +117,6 @@ const formatActivityLabel = (key) => {
 
 const createLifeCycle = async (phaseId) => {
   const projectId = projectStore.project?.projectId
-  console.log(projectStore.project)
   if (!projectId) {
     $q.notify({ type: 'negative', message: 'No project selected.' })
     return

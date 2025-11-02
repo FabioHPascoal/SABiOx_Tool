@@ -62,7 +62,7 @@ public class CommentService {
         comment.setRequirement(requirement);
         comment.setBody(request.body());
 
-        return new CommentResponseDTO(commentRepository.save(comment));
+        return new CommentResponseDTO(commentRepository.save(comment), userId);
     }
 
     @Transactional

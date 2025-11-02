@@ -42,12 +42,14 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.getAllEnabled());
     }
 
-    @PutMapping("/project/{id}")
+    @PutMapping("/project/{projectId}")
     public ResponseEntity<ProjectResponseDTO> updateProject(@PathVariable Long projectId,
                                                             @AuthenticationPrincipal User authUser,
                                                             @Valid @RequestBody ProjectRequestDTO projectRequestDTO) {
-        Project project = projectService.update(projectId, authUser.getId(), projectRequestDTO);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(new ProjectResponseDTO(project));
+        projectService.update(projectId, authUser.getId(), projectRequestDTO);
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED)
+                .body(projectService.update(projectId, authUser.getId(), projectRequestDTO));
     }
 
     @PutMapping("/project/disable/{id}")

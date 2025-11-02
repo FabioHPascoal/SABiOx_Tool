@@ -1,66 +1,3 @@
-<!-- <template>
-  <div
-    class="q-py-xs row no-wrap justify-center"
-    style="border-bottom: 3px solid var(--q-border)"
-  >
-    <q-btn
-      v-for="action in actions"
-      class="q-mx-xs"
-      :key="action.label"
-      :ripple="false"
-      dense
-      unelevated
-      :toggle="action.toggleble"
-      v-model="action.model"
-      :color="getButtonColor(action)"
-      @click="action.onClick(action)"
-    >
-      <q-icon
-        :name="action.icon"
-        :color="getIconColor(action)"
-      />
-      <q-tooltip>{{ action.label }}</q-tooltip>
-    </q-btn>
-  </div>
-</template>
-
-<script setup>
-import { reactive, watch } from 'vue'
-
-const props = defineProps({
-  kanbanBar: Boolean
-})
-
-const emit = defineEmits(['update:kanbanBar'])
-
-const actions = reactive([
-  {
-    label: 'Toggle Kanban View',
-    icon: 'visibility',
-    toggleble: true,
-    model: props.kanbanBar,
-    onClick: (action) => {
-      emit('update:kanbanBar', !action.model)
-    }
-  }
-])
-
-watch(
-  () => props.kanbanBar,
-  (val) => {
-    actions[0].model = val
-  }
-)
-
-const getButtonColor = (action) => {
-  return action.model ? 'btnPressed' : 'bg-Background'
-}
-
-const getIconColor = (action) => {
-  return action.model ? 'onBackground' : 'accent'
-}
-</script> -->
-
 <template>
   <div
     class="q-py-sm row no-wrap justify-center items-center q-gutter-md"
@@ -115,7 +52,8 @@ const props = defineProps({ kanbanBar: Boolean })
 const emit = defineEmits(['update:kanbanBar'])
 const projectStore = useProjectStore()
 
-const phaseOptions = ['REQUIREMENTS', 'SETUP', 'CAPTURE', 'DESIGN', 'IMPLEMENTATION']
+// const phaseOptions = ['REQUIREMENTS', 'SETUP', 'CAPTURE', 'DESIGN', 'IMPLEMENTATION']
+const phaseOptions = ['REQUIREMENTS']
 
 const lifeCycleOptions = computed(() => {
   const phase = projectStore.phases.find(p => p.phaseType === projectStore.selectedPhaseType)

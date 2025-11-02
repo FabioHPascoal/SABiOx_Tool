@@ -1,5 +1,6 @@
 package br.com.sabiox.sabiox_tool.domain.sabiox.phases.requirements.elicitRequirements.requirement.comment;
 
+import br.com.sabiox.sabiox_tool.domain.sabiox.phases.requirements.elicitRequirements.requirement.comment.commentRating.CommentRating;
 import br.com.sabiox.sabiox_tool.domain.sabiox.phases.requirements.elicitRequirements.requirement.comment.commentRating.CommentRatingType;
 import br.com.sabiox.sabiox_tool.domain.user.UserReducedDTO;
 
@@ -11,9 +12,10 @@ public record CommentDTO(
         Long likeCount,
         Long dislikeCount,
         String body,
-        UserReducedDTO user
+        UserReducedDTO user,
+        CommentRatingType userHasRated // <-- novo campo
 ) {
-    public CommentDTO(Comment comment) {
+    public CommentDTO(Comment comment, Long authUserId) {
         this(
                 comment.getId(),
                 comment.getCreationDate(),
@@ -22,7 +24,12 @@ public record CommentDTO(
                 comment.getCommentRatings().stream()
                         .filter(c -> c.getCommentRatingType().equals(CommentRatingType.DISLIKE)).count(),
                 comment.getBody(),
-                new UserReducedDTO(comment.getUser())
+                new UserReducedDTO(comment.getUser()),
+                comment.getCommentRatings().stream()
+                        .filter(c -> c.getUser().getId().equals(authUserId))
+                        .map(CommentRating::getCommentRatingType)
+                        .findFirst()
+                        .orElse(null)
         );
     }
 }

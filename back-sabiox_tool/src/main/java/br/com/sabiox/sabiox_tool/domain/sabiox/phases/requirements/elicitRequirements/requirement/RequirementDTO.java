@@ -14,14 +14,17 @@ public record RequirementDTO(
         UserReducedDTO user,
         List<CommentDTO> comments
 ) {
-    public RequirementDTO(Requirement requirement) {
+    public RequirementDTO(Requirement requirement, Long authUserId) {
         this(
                 requirement.getId(),
                 requirement.getRequirementType(),
                 requirement.getDescription(),
                 requirement.getCreationDate(),
                 new UserReducedDTO(requirement.getUser()),
-                requirement.getComments().stream().map(CommentDTO::new).toList()
+                requirement.getComments()
+                        .stream()
+                        .map(c -> new CommentDTO(c, authUserId))
+                        .toList()
         );
     }
 }

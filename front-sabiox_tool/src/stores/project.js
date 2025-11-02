@@ -10,15 +10,6 @@ export const useProjectStore = defineStore('project', () => {
   const selectedPhaseType = ref('REQUIREMENTS')
   const selectedLifeCycleIndex = ref(null)
 
-  watch(phases, (newPhases) => {
-    const phase = newPhases.find(p => p.phaseType === selectedPhaseType.value)
-    if (phase && phase.lifeCycles?.length) {
-      selectedLifeCycleIndex.value = phase.lifeCycles.length - 1
-    } else {
-      selectedLifeCycleIndex.value = null
-    }
-  }, { immediate: true })
-
   const fetchProject = async (id) => {
     if (!id) return
     loading.value = true
@@ -74,5 +65,9 @@ export const useProjectStore = defineStore('project', () => {
     clearProject,
     activitiesList,
     getSelectedLifeCycle
+  }
+}, {
+  persist: {
+    paths: ['selectedPhaseType', 'selectedLifeCycleIndex']
   }
 })

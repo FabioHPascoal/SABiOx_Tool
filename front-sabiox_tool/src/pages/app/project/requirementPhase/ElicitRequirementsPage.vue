@@ -38,61 +38,88 @@
         :user="requirement.user"
         :creation-date="requirement.creationDate"
       >
-        <q-card-section
+        <q-card
+          flat
+          bordered
           v-for="comment in requirement.comments"
           :key="comment.id"
-          class="q-pa-sm bg-grey-4"
+          class="q-pa-sm q-mb-md bg-surface"
         >
-          <div class="row q-gutter-md">
+          <div class="row q-gutter-sm">
             <!-- COLUNA ESQUERDA -->
             <div class="col-auto text-center comment-sidebar">
               <q-avatar size="42px" class="q-mb-xs">
                 <img :src="comment.user.avatarUrl" :alt="comment.user.name" />
               </q-avatar>
-              <div class="text-caption text-weight-medium">{{ comment.user.name }}</div>
-              <div class="text-caption text-grey-7 q-mt-xs">
-                {{ formatDate(comment.creationDate) }}
-              </div>
-
-              <div class="q-mt-sm">
-                <q-btn
-                  flat
-                  dense
-                  icon="thumb_up"
-                  size="sm"
-                  color="primary"
-                  :disable="true"
-                />
-                <span class="text-caption text-grey-8">{{ comment.likeCount }}</span>
-              </div>
-
-              <div>
-                <q-btn
-                  flat
-                  dense
-                  icon="thumb_down"
-                  size="sm"
-                  color="negative"
-                  :disable="true"
-                />
-                <span class="text-caption text-grey-8">{{ comment.dislikeCount }}</span>
-              </div>
+              <div class="text-caption text-weight-medium text-onBackground">{{ comment.user.name }}</div>
+              <q-badge
+                :color="isOwner(comment.user) ? 'amber-14' : 'grey-5'"
+                :label="isOwner(comment.user) ? 'Project Owner' : 'Project Member'"
+              />
             </div>
 
             <!-- COLUNA DIREITA -->
-            <div class="col comment-body text-body2">
-              {{ comment.body }}
+            <div class="col comment-body column justify-between">
+              <div class="text-body2 text-onBackground q-mb-sm">
+                {{ comment.body }}
+              </div>
+              <div class="comment-footer row items-center justify-between q-pt-xs q-mt-xs">
+                <div class="row items-center q-gutter-xs">
+                  <q-btn
+                    flat
+                    dense
+                    icon="thumb_up"
+                    size="sm"
+                    :color="hasUserRated(comment, 'LIKE') ? 'primary' : 'grey'"
+                    @click="rateComment(requirement.id, comment.id, 'LIKE')"
+                  />
+                  <span class="text-caption text-grey-8">{{ comment.likeCount }}</span>
+
+                  <q-btn
+                    flat
+                    dense
+                    icon="thumb_down"
+                    size="sm"
+                    :color="hasUserRated(comment, 'DISLIKE') ? 'negative' : 'grey'"
+                    @click="rateComment(requirement.id, comment.id, 'DISLIKE')"
+                  />
+                  <span class="text-caption text-grey-8">{{ comment.dislikeCount }}</span>
+                </div>
+
+                <div class="text-caption text-grey-7">
+                  {{ formatDate(comment.creationDate) }}
+                </div>
+              </div>
             </div>
           </div>
+        </q-card>
 
-          <!-- Separador entre comentários -->
-          <q-separator
-            v-if="requirement.comments.indexOf(comment) !== requirement.comments.length - 1"
-            class="q-my-sm"
-            color="border"
-          />
-        </q-card-section>
+        <q-input
+          v-model="commentInputs[requirement.id]"
+          outlined
+          autogrow
+          placeholder="Add Comment"
+          dense
+        >
+          <template v-slot:after>
+            <q-btn
+              round
+              dense
+              flat
+              icon="send"
+              @click="addComment(requirement.id)"
+            />
+          </template>
+          <template v-slot:append>
+            <q-icon
+              name="close"
+              @click="commentInputs[requirement.id] = ''"
+              class="cursor-pointer"
+            />
+          </template>
+        </q-input>
 
+        
       </expansible-card>
     </transition-group>
 
@@ -149,10 +176,12 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import { useProjectStore } from 'src/stores/project'
+import { useAuthStore } from 'src/stores/auth'
 import { api } from 'boot/axios'
 import { useQuasar } from 'quasar'
 
 const $q = useQuasar()
+const authStore = useAuthStore()
 const projectStore = useProjectStore()
 
 const requirements = ref([])
@@ -160,6 +189,7 @@ const loading = ref(false)
 const saving = ref(false)
 const showDialog = ref(false)
 const form = ref({ description: '', requirementType: '' })
+const commentInputs = ref({})
 
 const lifeCycle = computed(() => projectStore.getSelectedLifeCycle)
 
@@ -208,6 +238,88 @@ const addRequirement = async () => {
   }
 }
 
+const addComment = async (requirementId) => {
+  const body = commentInputs.value[requirementId]?.trim()
+  if (!body) {
+    $q.notify({ type: 'warning', message: 'Comment cannot be empty' })
+    return
+  }
+
+  try {
+    const payload = { body }
+
+    const { data } = await api.post(
+      `/project/requirement/${requirementId}/comment`,
+      payload
+    )
+
+    const req = requirements.value.find(r => r.id === requirementId)
+    if (req) {
+      // Adiciona o novo comentário ao topo (ou final, como preferir)
+      req.comments.push({
+        id: data.id,
+        body: data.body,
+        creationDate: data.creationDate,
+        likeCount: data.likeCount,
+        dislikeCount: data.dislikeCount,
+        userHasRated: data.userHasRated,
+        user: {
+          id: authStore.user?.id,
+          name: authStore.user?.name || 'You',
+          avatarUrl: authStore.user?.avatarUrl || ''
+        }
+      })
+    }
+
+    commentInputs.value[requirementId] = '' // limpa campo
+    $q.notify({ type: 'positive', message: 'Comment added successfully' })
+  } catch (err) {
+    console.error('Erro ao adicionar comentário:', err)
+    $q.notify({ type: 'negative', message: 'Failed to add comment' })
+  }
+}
+
+
+const rateComment = async (requirementId, commentId, type) => {
+  try {
+    const req = requirements.value.find(r => r.id === requirementId)
+    if (!req) return
+    const comment = req.comments.find(c => c.id === commentId)
+    if (!comment) return
+
+    const previous = comment.userHasRated
+
+    if (previous === type) {
+      if (type === 'LIKE') comment.likeCount--
+      else comment.dislikeCount--
+      comment.userHasRated = undefined
+    } else {
+      if (previous === 'LIKE') comment.likeCount--
+      if (previous === 'DISLIKE') comment.dislikeCount--
+
+      if (type === 'LIKE') comment.likeCount++
+      if (type === 'DISLIKE') comment.dislikeCount++
+
+      comment.userHasRated = type
+    }
+
+    const payload = comment.userHasRated
+      ? { commentRatingType: comment.userHasRated }
+      : { commentRatingType: null }
+    await api.post(
+      `/project/requirement/${requirementId}/comment/${commentId}`,
+      payload
+    )
+
+  } catch (err) {
+    console.error('Erro ao avaliar comentário:', err)
+    $q.notify({ type: 'negative', message: 'Failed to rate comment' })
+  }
+}
+
+const hasUserRated = (comment, type) => comment.userHasRated === type
+
+
 const getBadgeLabel = (type) => {
   switch (type) {
     case 'FUNCTIONAL': return 'Functional'
@@ -220,7 +332,7 @@ const getBadgeLabel = (type) => {
 const getBadgeColor = (type) => {
   switch (type) {
     case 'FUNCTIONAL': return 'green'
-    case 'NON_FUNCTIONAL': return 'orange'
+    case 'NON_FUNCTIONAL': return 'teal'
     case 'DOMAIN': return 'blue'
     default: return 'grey'
   }
@@ -259,7 +371,10 @@ const formatDate = (dateStr) => {
   })
 }
 
+const isOwner = (user) => user?.id === projectStore.project?.ownerId
+
 </script>
+
 
 <style scoped>
 .outlined-btn {
@@ -290,7 +405,7 @@ border-radius: 8px;
   width: 120px;
   min-width: 120px;
   background-color: #f9f9f9;
-  border-right: 1px solid var(--q-border);
+  border-right: 1px solid grey;
   padding: 8px;
   border-radius: 8px 0 0 8px;
 }
@@ -305,4 +420,7 @@ border-radius: 8px;
   cursor: default !important;
 }
 
+.bg-surface {
+  background-color: var(--q-surface);
+}
 </style>

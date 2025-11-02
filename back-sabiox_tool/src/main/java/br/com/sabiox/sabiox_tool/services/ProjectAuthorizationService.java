@@ -29,4 +29,12 @@ public class ProjectAuthorizationService {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You're not a member of this project.");
         }
     }
+
+    public void assertNotMember(Long projectId, Long userId) {
+        boolean isMember = projectUserRepository.existsByProjectIdAndUserId(projectId, userId);
+
+        if (isMember) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "You're already a member of this project.");
+        }
+    }
 }

@@ -36,17 +36,6 @@ export default boot(({ app }) => {
     return Promise.reject(error)
   })
 
-  api.interceptors.response.use((response) => {
-    return response
-  }, (error) => {
-    Notify.create({
-      type: 'warning',
-      message: 'Houve um erro. Tente novamente mais tarde.'
-    })
-
-    return Promise.reject(error)
-  })
-
   // for use inside Vue files (Options API) through this.$axios and this.$api
 
   app.config.globalProperties.$axios = axios
