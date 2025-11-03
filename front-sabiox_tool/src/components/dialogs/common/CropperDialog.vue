@@ -27,16 +27,16 @@
       <q-card-actions align="right">
         <q-btn
           @click="onCloseDialog"
-          label="Descartar"
+          label="Discard"
           color="accent"
           padding="sm md"
           flat
         />
         <q-btn
           @click="cropImage"
-          label="Recortar"
+          label="Trim"
           color="primary"
-          text-color="dark"
+          text-color="onPrimary"
           padding="sm md"
         />
       </q-card-actions>

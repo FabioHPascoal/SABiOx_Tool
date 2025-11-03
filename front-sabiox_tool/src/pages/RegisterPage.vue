@@ -18,7 +18,7 @@
                   v-model="avatar"
                   outline
                   avatar-size="100px"
-                  add-label="Foto"
+                  add-label="Picture"
                 />
                 <transition
                   enter-active-class="animated fadeIn"
@@ -57,7 +57,7 @@
               <div class="col-12">
                 <q-input
                   v-model="user.password"
-                  label="Senha *"
+                  label="Password *"
                   :rules="userRules.password"
                   :type="showPassword ? '' : 'password'"
                 >
@@ -74,7 +74,7 @@
               <div class="col-12">
                 <q-input
                   v-model="user.password_confirmation"
-                  label="Repetir Senha *"
+                  label="Repeat password *"
                   :rules="userRules.password_confirmation"
                   :type="showPasswordConfirmation ? '' : 'password'"
                 >

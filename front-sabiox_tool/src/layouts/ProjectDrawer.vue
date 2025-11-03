@@ -155,8 +155,10 @@
               outlined
               dense
               class="q-ml-none col"
+              :disable="!isOwner"
             />
             <q-btn
+              v-if="isOwner"
               no-caps
               label="Add"
               color="positive"

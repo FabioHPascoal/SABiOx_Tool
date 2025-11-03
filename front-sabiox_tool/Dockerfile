@@ -28,7 +28,10 @@ RUN npx quasar build
 FROM nginx:alpine AS final
 # Copia o resultado do build Quasar para o Nginx (o caminho padrão de build é dist/spa)
 COPY --from=build /app/dist/spa /usr/share/nginx/html
-# Copia o arquivo de configuração do Nginx (se você tiver um personalizado)
-# COPY nginx.conf /etc/nginx/nginx.conf
+
+# Copia o arquivo de configuração do Nginx
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 EXPOSE 80
+# O CMD padrão do Nginx já aponta para esse config
 CMD ["nginx", "-g", "daemon off;"]

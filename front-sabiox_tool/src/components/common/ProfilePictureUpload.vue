@@ -55,7 +55,7 @@ export default defineComponent({
     outline: Boolean,
     addLabel: {
       type: String,
-      default: 'Adicionar foto de perfil'
+      default: 'Add profile picture'
     }
   },
   emits: [...profilePictureEmits],
