@@ -2,14 +2,10 @@ import { boot } from 'quasar/wrappers'
 import axios from 'axios'
 import { Notify } from 'quasar'
 
-// Be careful when using SSR for cross-request state pollution
-// due to creating a Singleton instance here;
-// If any client changes this (global) instance, it might be a
-// good idea to move this instance creation inside of the
-// "export default () => {}" function below (which runs individually
-// for each client)
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+
 const api = axios.create({
-  baseURL: new URL('api', import.meta.env.VITE_API_URL).href,
+  baseURL: API_BASE_URL + '/api', 
 
   withCredentials: true,
   timeout: 180000,
@@ -20,12 +16,6 @@ const api = axios.create({
 })
 
 export default boot(({ app }) => {
-  // api.interceptors.request.use((request) => {
-  //   const token = localStorage.getItem('access_token')
-
-  //   if (token) request.headers.Authorization = `Bearer ${token}`
-
-  //   return request
   api.interceptors.request.use((request) => {
     const token = localStorage.getItem('access_token')
     if (token) request.headers.Authorization = `Bearer ${token}`
@@ -36,15 +26,8 @@ export default boot(({ app }) => {
     return Promise.reject(error)
   })
 
-  // for use inside Vue files (Options API) through this.$axios and this.$api
-
   app.config.globalProperties.$axios = axios
-  // ^ ^ ^ this will allow you to use this.$axios (for Vue Options API form)
-  //       so you won't necessarily have to import axios in each vue file
-
   app.config.globalProperties.$api = api
-  // ^ ^ ^ this will allow you to use this.$api (for Vue Options API form)
-  //       so you can easily perform requests against your app's API
 })
 
 export { api }

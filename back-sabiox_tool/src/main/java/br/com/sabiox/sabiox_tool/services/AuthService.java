@@ -57,10 +57,11 @@ public class AuthService implements UserDetailsService {
     }
 
     public List<UserDTO> getAllUsers(IndexUsersRequestDTO filterDTO) {
-        Specification<User> spec = Specification
-                .where(UserSpecification.hasName(filterDTO.name()))
-                .and(UserSpecification.hasEmail(filterDTO.email()))
-                .and(UserSpecification.hasRole(filterDTO.role()));
+        Specification<User> spec = Specification.allOf(
+                UserSpecification.hasName(filterDTO.name()),
+                UserSpecification.hasEmail(filterDTO.email()),
+                UserSpecification.hasRole(filterDTO.role())
+        );
 
         List<User> allUsers = this.userRepository.findAll(
                 spec,

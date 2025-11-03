@@ -1,0 +1,1769 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/api/project/{projectId}": {
+      "put": {
+        "tags": [
+          "project-controller"
+        ],
+        "operationId": "updateProject",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProjectRequestDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/project/life_cycle/{lifeCycleId}/identify_subdomains": {
+      "get": {
+        "tags": [
+          "identify-subdomains-controller"
+        ],
+        "operationId": "getIdentifySubdomains",
+        "parameters": [
+          {
+            "name": "lifeCycleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/IdentifySubdomainsResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "identify-subdomains-controller"
+        ],
+        "operationId": "addSubdomain",
+        "parameters": [
+          {
+            "name": "lifeCycleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IdentifySubdomainsRequestDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubdomainDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/project/life_cycle/{lifeCycleId}/identify_domain": {
+      "get": {
+        "tags": [
+          "identify-domain-controller"
+        ],
+        "operationId": "getDefinePurpose",
+        "parameters": [
+          {
+            "name": "lifeCycleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/IdentifyDomainResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "identify-domain-controller"
+        ],
+        "operationId": "editIdentifyDomain",
+        "parameters": [
+          {
+            "name": "lifeCycleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IdentifyDomainRequestDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/IdentifyDomainResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/project/life_cycle/{lifeCycleId}/define_purpose": {
+      "get": {
+        "tags": [
+          "define-purpose-controller"
+        ],
+        "operationId": "getDefinePurpose_1",
+        "parameters": [
+          {
+            "name": "lifeCycleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinePurposeResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "define-purpose-controller"
+        ],
+        "operationId": "editDefinePurpose",
+        "parameters": [
+          {
+            "name": "lifeCycleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DefinePurposeRequestDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinePurposeResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/project/disable/{id}": {
+      "put": {
+        "tags": [
+          "project-controller"
+        ],
+        "operationId": "disableProject",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/project/activity/{activityId}": {
+      "put": {
+        "tags": [
+          "activity-controller"
+        ],
+        "operationId": "changeActivityStage",
+        "parameters": [
+          {
+            "name": "activityId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActivityStageDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PhaseResponseDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/user/{userId}/update-role": {
+      "put": {
+        "tags": [
+          "user-controller"
+        ],
+        "operationId": "updateUserRole",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user/avatar": {
+      "post": {
+        "tags": [
+          "user-controller"
+        ],
+        "operationId": "uploadAvatar",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "avatar": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                },
+                "required": [
+                  "avatar"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "user-controller"
+        ],
+        "operationId": "uploadAvatar_1",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/project": {
+      "post": {
+        "tags": [
+          "project-controller"
+        ],
+        "operationId": "createProject",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProjectRequestDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/project/{projectId}/lifeCycle": {
+      "get": {
+        "tags": [
+          "life-cycle-controller"
+        ],
+        "operationId": "getLifeCyclesByPhaseType",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LifeCycleRequestDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LifeCycleResponseDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "life-cycle-controller"
+        ],
+        "operationId": "createLifeCycle",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LifeCycleRequestDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/LifeCycleResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/project/{id}": {
+      "get": {
+        "tags": [
+          "project-controller"
+        ],
+        "operationId": "getProject",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "project-controller"
+        ],
+        "operationId": "addMember",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddMemberRequestDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/project/requirement/{requirementId}/comment": {
+      "post": {
+        "tags": [
+          "comment-controller"
+        ],
+        "operationId": "createComment",
+        "parameters": [
+          {
+            "name": "requirementId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommentRequestDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommentResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/project/requirement/{requirementId}/comment/{commentId}": {
+      "post": {
+        "tags": [
+          "comment-controller"
+        ],
+        "operationId": "rateComment",
+        "parameters": [
+          {
+            "name": "requirementId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "commentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommentRatingRequestDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommentRatingResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/project/life_cycle/{lifeCycleId}/requirement": {
+      "post": {
+        "tags": [
+          "requirement-controller"
+        ],
+        "operationId": "createRequirement",
+        "parameters": [
+          {
+            "name": "lifeCycleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequirementRequestDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequirementResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/register": {
+      "post": {
+        "tags": [
+          "auth-controller"
+        ],
+        "operationId": "register",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterRequestDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "tags": [
+          "auth-controller"
+        ],
+        "operationId": "login",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequestDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/uploads/avatars/{fileName}": {
+      "get": {
+        "tags": [
+          "file-controller"
+        ],
+        "operationId": "getAvatar",
+        "parameters": [
+          {
+            "name": "fileName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string",
+                  "format": "byte"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user": {
+      "get": {
+        "tags": [
+          "user-controller"
+        ],
+        "operationId": "getUser",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user/projects": {
+      "get": {
+        "tags": [
+          "user-controller"
+        ],
+        "operationId": "getProjects",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProjectUserResponseDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/projects/enabled": {
+      "get": {
+        "tags": [
+          "project-controller"
+        ],
+        "operationId": "getAllEnabledProjects",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProjectResponseReducedDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/project/{projectId}/phase": {
+      "get": {
+        "tags": [
+          "phase-controller"
+        ],
+        "operationId": "getAllPhases",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PhaseResponseDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/project/life_cycle/{lifeCycleId}/elicit_requirements": {
+      "get": {
+        "tags": [
+          "elicit-requirements-controller"
+        ],
+        "operationId": "getElicitRequirements",
+        "parameters": [
+          {
+            "name": "lifeCycleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ElicitRequirementsResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/project/lifeCycle/{lifeCycleId}": {
+      "get": {
+        "tags": [
+          "life-cycle-controller"
+        ],
+        "operationId": "getLifeCycle",
+        "parameters": [
+          {
+            "name": "lifeCycleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/LifeCycleResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "life-cycle-controller"
+        ],
+        "operationId": "deleteLifeCycle",
+        "parameters": [
+          {
+            "name": "lifeCycleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/admin/users": {
+      "get": {
+        "tags": [
+          "user-controller"
+        ],
+        "operationId": "getAllUsers",
+        "parameters": [
+          {
+            "name": "filterDTO",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/IndexUsersRequestDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/projects": {
+      "get": {
+        "tags": [
+          "project-controller"
+        ],
+        "operationId": "getAllProjects",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProjectResponseDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/logout": {
+      "delete": {
+        "tags": [
+          "auth-controller"
+        ],
+        "operationId": "logout",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ProjectRequestDTO": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "PhaseReducedDTO": {
+        "type": "object",
+        "properties": {
+          "phaseId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "phaseType": {
+            "type": "string",
+            "enum": [
+              "REQUIREMENTS",
+              "SETUP",
+              "CAPTURE",
+              "DESIGN",
+              "IMPLEMENTATION"
+            ]
+          }
+        }
+      },
+      "ProjectResponseDTO": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "ownerId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "isEnabled": {
+            "type": "boolean"
+          },
+          "phases": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PhaseReducedDTO"
+            }
+          },
+          "members": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserReducedDTO"
+            }
+          }
+        }
+      },
+      "UserReducedDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "avatarUrl": {
+            "type": "string"
+          }
+        }
+      },
+      "IdentifySubdomainsRequestDTO": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "SubdomainDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "IdentifyDomainRequestDTO": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "horizontalDimension": {
+            "type": "string"
+          },
+          "verticalDimension": {
+            "type": "string"
+          }
+        }
+      },
+      "DomainDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "description": {
+            "type": "string"
+          },
+          "horizontalDimension": {
+            "type": "string"
+          },
+          "verticalDimension": {
+            "type": "string"
+          }
+        }
+      },
+      "IdentifyDomainResponseDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "domainDTO": {
+            "$ref": "#/components/schemas/DomainDTO"
+          }
+        }
+      },
+      "DefinePurposeRequestDTO": {
+        "type": "object",
+        "properties": {
+          "whatQuestion": {
+            "type": "string"
+          },
+          "forWhatQuestion": {
+            "type": "string"
+          },
+          "whyQuestion": {
+            "type": "string"
+          }
+        }
+      },
+      "DefinePurposeResponseDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "whatQuestion": {
+            "type": "string"
+          },
+          "forWhatQuestion": {
+            "type": "string"
+          },
+          "whyQuestion": {
+            "type": "string"
+          }
+        }
+      },
+      "ActivityStageDTO": {
+        "type": "object",
+        "properties": {
+          "activityStage": {
+            "type": "string",
+            "enum": [
+              "NOT_STARTED",
+              "IN_PROGRESS",
+              "DOCUMENTATION",
+              "CONTROL",
+              "EVALUATE",
+              "COMPLETED"
+            ]
+          }
+        }
+      },
+      "ActivitySummaryDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "stage": {
+            "type": "string",
+            "enum": [
+              "NOT_STARTED",
+              "IN_PROGRESS",
+              "DOCUMENTATION",
+              "CONTROL",
+              "EVALUATE",
+              "COMPLETED"
+            ]
+          }
+        }
+      },
+      "LifeCycleResponseDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "phaseType": {
+            "type": "string",
+            "enum": [
+              "REQUIREMENTS",
+              "SETUP",
+              "CAPTURE",
+              "DESIGN",
+              "IMPLEMENTATION"
+            ]
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "activities": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/ActivitySummaryDTO"
+            }
+          }
+        }
+      },
+      "PhaseResponseDTO": {
+        "type": "object",
+        "properties": {
+          "phaseId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "phaseType": {
+            "type": "string",
+            "enum": [
+              "REQUIREMENTS",
+              "SETUP",
+              "CAPTURE",
+              "DESIGN",
+              "IMPLEMENTATION"
+            ]
+          },
+          "lifeCycles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LifeCycleResponseDTO"
+            }
+          }
+        }
+      },
+      "LifeCycleRequestDTO": {
+        "type": "object",
+        "properties": {
+          "phaseType": {
+            "type": "string",
+            "enum": [
+              "REQUIREMENTS",
+              "SETUP",
+              "CAPTURE",
+              "DESIGN",
+              "IMPLEMENTATION"
+            ]
+          }
+        }
+      },
+      "AddMemberRequestDTO": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          }
+        }
+      },
+      "CommentRequestDTO": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "string"
+          }
+        }
+      },
+      "CommentResponseDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "requirementId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "likeCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "dislikeCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "body": {
+            "type": "string"
+          },
+          "userHasRated": {
+            "type": "string",
+            "enum": [
+              "LIKE",
+              "DISLIKE"
+            ]
+          }
+        }
+      },
+      "CommentRatingRequestDTO": {
+        "type": "object",
+        "properties": {
+          "commentRatingType": {
+            "type": "string",
+            "enum": [
+              "LIKE",
+              "DISLIKE"
+            ]
+          }
+        }
+      },
+      "CommentRatingResponseDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "commentId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "commentRatingType": {
+            "type": "string",
+            "enum": [
+              "LIKE",
+              "DISLIKE"
+            ]
+          }
+        }
+      },
+      "RequirementRequestDTO": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "requirementType": {
+            "type": "string",
+            "enum": [
+              "FUNCTIONAL",
+              "NON_FUNCTIONAL",
+              "DOMAIN"
+            ]
+          }
+        }
+      },
+      "CommentDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "likeCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "dislikeCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "body": {
+            "type": "string"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserReducedDTO"
+          },
+          "userHasRated": {
+            "type": "string",
+            "enum": [
+              "LIKE",
+              "DISLIKE"
+            ]
+          }
+        }
+      },
+      "RequirementResponseDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "activityId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "requirementType": {
+            "type": "string",
+            "enum": [
+              "FUNCTIONAL",
+              "NON_FUNCTIONAL",
+              "DOMAIN"
+            ]
+          },
+          "description": {
+            "type": "string"
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "comments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommentDTO"
+            }
+          }
+        }
+      },
+      "RegisterRequestDTO": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "avatar": {
+            "type": "string",
+            "format": "binary"
+          }
+        }
+      },
+      "LoginRequestDTO": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "LoginResponseDTO": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserDTO"
+          }
+        }
+      },
+      "UserDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "USER",
+              "ADMIN"
+            ]
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "avatarUrl": {
+            "type": "string"
+          }
+        }
+      },
+      "ProjectUserResponseDTO": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "title": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "OWNER",
+              "MEMBER"
+            ]
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "owner": {
+            "$ref": "#/components/schemas/UserReducedDTO"
+          }
+        }
+      },
+      "ProjectResponseReducedDTO": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "ownerId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "isEnabled": {
+            "type": "boolean"
+          }
+        }
+      },
+      "IdentifySubdomainsResponseDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "subdomains": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubdomainDTO"
+            }
+          }
+        }
+      },
+      "ElicitRequirementsResponseDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "requirements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RequirementDTO"
+            }
+          }
+        }
+      },
+      "RequirementDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "requirementType": {
+            "type": "string",
+            "enum": [
+              "FUNCTIONAL",
+              "NON_FUNCTIONAL",
+              "DOMAIN"
+            ]
+          },
+          "description": {
+            "type": "string"
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserReducedDTO"
+          },
+          "comments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommentDTO"
+            }
+          }
+        }
+      },
+      "IndexUsersRequestDTO": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "USER",
+              "ADMIN"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

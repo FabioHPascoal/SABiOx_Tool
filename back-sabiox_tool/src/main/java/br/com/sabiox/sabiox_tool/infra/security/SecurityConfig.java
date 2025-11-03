@@ -48,13 +48,24 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        // endpoints de autenticação
                         .requestMatchers(HttpMethod.POST, "/api/auth/login").anonymous()
                         .requestMatchers(HttpMethod.POST, "/api/auth/register").anonymous()
                         .requestMatchers(HttpMethod.POST, "/api/auth/logout").anonymous()
-                        .requestMatchers("/api/admin/**").hasRole(UserRole.ADMIN.toString())
+
+                        // endpoints do Swagger/OpenAPI
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+
+                        // endpoints públicos
                         .requestMatchers(HttpMethod.GET, "/uploads/avatars/**").permitAll()
+
+                        // endpoints administrativos
+                        .requestMatchers("/api/admin/**").hasRole(UserRole.ADMIN.toString())
+
+                        // resto precisa de autenticação
                         .anyRequest().authenticated()
                 )
+
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .logout(logout -> logout
                         .logoutUrl("/api/auth/logout")
@@ -64,27 +75,6 @@ public class SecurityConfig {
                 )
                 .build();
     }
-
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        return http
-//                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-//                .csrf(AbstractHttpConfigurer::disable)
-//                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//                .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers(HttpMethod.POST, "/api/auth/login", "/api/auth/register").permitAll()
-//                        .requestMatchers(HttpMethod.DELETE, "/api/auth/logout").authenticated()
-//                        .anyRequest().authenticated()
-//                )
-//                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
-//                .logout(logout -> logout
-//                        .logoutUrl("/api/auth/logout")
-//                        .logoutSuccessHandler((request, response, authentication) -> {
-//                            response.setStatus(200);
-//                        })
-//                )
-//                .build();
-//    }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {

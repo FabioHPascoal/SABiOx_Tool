@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  sabiox-db:
+    image: mysql:8.1
+    container_name: sabiox-db
+    restart: unless-stopped
+    volumes:
+      - sabiox-data:/var/lib/mysql
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "3LlxEf3!8#bA*%5j&58$"
+      MYSQL_DATABASE: sabioxdb
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  backend:
+    build:
+      context: ./back-sabiox_tool
+    ports:
+      - "8080:8080"
+
+    depends_on:
+      sabiox-db:
+        condition: service_healthy
+
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://sabiox-db:3306/sabioxdb
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 3LlxEf3!8#bA*%5j&58$
+
+  frontend:
+    build:
+      context: ./front-sabiox_tool
+      dockerfile: Dockerfile
+    ports:
+      - "9000:80"
+    depends_on:
+      - backend
+    environment:
+      VITE_API_URL: http://backend:8080
+
+volumes:
+  sabiox-data:
